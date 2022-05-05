@@ -20,13 +20,23 @@ client.client_credentials_flow(
     ],
 )
 
+# Retrieve a single user by username.
 single_user = jusers.users_retrieve.sync("amanning", client=client)
-all_users = jusers.users_list.sync(client=client)
+# Retrieve all users. Can filter by institution service_user and active status. Can also search and change ordering.
+all_users = jusers.users_list.sync(client=client, is_active=True, service_user=False)
+# Get all services a given user belongs to.
 user_services = jusers.users_services_retrieve.sync("amanning", client=client)
 
+# Get all information about a single service, by service id..
 single_service = jservices.services_retrieve.sync(1, client=client)
-all_services = jservices.services_list.sync(client=client)
+# Get all services. Can fileter by hidden state, category, and ceda_managed. Can also search and change ordering.
+all_services = jservices.services_list.sync(
+    client=client, hidden=False, ceda_managed=False
+)
+# Get all the roles which are active in a service, by service id.
 service_users = jservices.services_roles_retrieve.sync(1, client=client)
 
+# Get a single category by name.
 single_category = jcats.categories_retrieve.sync("login-services", client=client)
+# Get all categories. Can search and change ordering.
 all_categories = jcats.categories_list.sync(client=client)
