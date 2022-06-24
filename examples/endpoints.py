@@ -34,7 +34,9 @@ all_services = jservices.services_list.sync(
     client=client, hidden=False, ceda_managed=False
 )
 # Get all the roles which are active in a service, by service id.
-service_users = jservices.services_roles_retrieve.sync(1, client=client)
+service_users = jservices.services_roles_retrieve.sync(148, client=client)
+service_users = [x for x in service_users if x.name == "USER"][0]
+print(len(service_users.accesses))
 
 # Get a single category by name.
 single_category = jcats.categories_retrieve.sync("login-services", client=client)

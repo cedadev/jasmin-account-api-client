@@ -9,143 +9,150 @@ paths:
       operationId: categories_list
       description: Details of services categories.
       parameters:
-        - in: query
-          name: name
-          schema:
-            type: string
-        - name: ordering
-          required: false
-          in: query
-          description: Which field to use when ordering the results.
-          schema:
-            type: string
-        - name: search
-          required: false
-          in: query
-          description: A search term.
-          schema:
-            type: string
+      - in: query
+        name: name
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
       tags:
-        - categories
+      - categories
       security:
-        - oauth2:
-            - jasmin.services.categories.all:read
+      - oauth2:
+        - jasmin.services.categories.all:read
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/CategoryList"
-          description: ""
+                  $ref: '#/components/schemas/CategoryList'
+          description: ''
   /api/v1/categories/{name}/:
     get:
       operationId: categories_retrieve
       description: Details of services categories.
       parameters:
-        - in: path
-          name: name
-          schema:
-            type: string
-            description: Short name for the category, used in URLs
-          required: true
+      - in: path
+        name: name
+        schema:
+          type: string
+          description: Short name for the category, used in URLs
+        required: true
       tags:
-        - categories
+      - categories
       security:
-        - oauth2:
-            - jasmin.services.categories.all:read
+      - oauth2:
+        - jasmin.services.categories.all:read
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Category"
-          description: ""
+                $ref: '#/components/schemas/Category'
+          description: ''
   /api/v1/services/:
     get:
       operationId: services_list
       description: View and get details of a service.
       parameters:
-        - in: query
-          name: category
-          schema:
-            type: integer
-        - in: query
-          name: ceda_managed
-          schema:
-            type: boolean
-        - in: query
-          name: hidden
-          schema:
-            type: boolean
-        - name: ordering
-          required: false
-          in: query
-          description: Which field to use when ordering the results.
-          schema:
-            type: string
-        - name: search
-          required: false
-          in: query
-          description: A search term.
-          schema:
-            type: string
+      - in: query
+        name: category
+        schema:
+          type: integer
+      - in: query
+        name: ceda_managed
+        schema:
+          type: boolean
+      - in: query
+        name: hidden
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
       tags:
-        - services
+      - services
       security:
-        - oauth2:
-            - jasmin.services.services.all:read
+      - oauth2:
+        - jasmin.services.services.all:read
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ServiceList"
-          description: ""
+                  $ref: '#/components/schemas/ServiceList'
+          description: ''
   /api/v1/services/{id}/:
     get:
       operationId: services_retrieve
       description: View and get details of a service.
       parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          description: A unique integer value identifying this service.
-          required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service.
+        required: true
       tags:
-        - services
+      - services
       security:
-        - oauth2:
-            - jasmin.services.services.all:read
+      - oauth2:
+        - jasmin.services.services.all:read
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Service"
-          description: ""
+                $ref: '#/components/schemas/Service'
+          description: ''
   /api/v1/services/{id}/roles/:
     get:
       operationId: services_roles_retrieve
       description: List roles in a services and their holders.
       parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          description: A unique integer value identifying this service.
-          required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service.
+        required: true
+      - in: query
+        name: on_date
+        schema:
+          type: string
+          format: date
+        description: ISO Date on which you would like to know the active roles for
+          a service.
       tags:
-        - services
+      - services
       security:
-        - oauth2:
-            - jasmin.services.serviceroles.all:read
+      - oauth2:
+        - jasmin.services.serviceroles.all:read
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -158,89 +165,87 @@ paths:
       operationId: users_list
       description: View jasmin_auth Users.
       parameters:
-        - in: query
-          name: institution
-          schema:
-            type: integer
-        - in: query
-          name: is_active
-          schema:
-            type: boolean
-        - name: ordering
-          required: false
-          in: query
-          description: Which field to use when ordering the results.
-          schema:
-            type: string
-        - name: search
-          required: false
-          in: query
-          description: A search term.
-          schema:
-            type: string
-        - in: query
-          name: service_user
-          schema:
-            type: boolean
+      - in: query
+        name: institution
+        schema:
+          type: integer
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: service_user
+        schema:
+          type: boolean
       tags:
-        - users
+      - users
       security:
-        - oauth2:
-            - jasmin.auth.users.all:read
+      - oauth2:
+        - jasmin.auth.users.all:read
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/UserList"
-          description: ""
+                  $ref: '#/components/schemas/UserList'
+          description: ''
   /api/v1/users/{username}/:
     get:
       operationId: users_retrieve
       description: View jasmin_auth Users.
       parameters:
-        - in: path
-          name: username
-          schema:
-            type: string
-            description:
-              Required. 150 characters or fewer. Letters, digits and @/./+/-/_
-              only.
-          required: true
+      - in: path
+        name: username
+        schema:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+        required: true
       tags:
-        - users
+      - users
       security:
-        - oauth2:
-            - jasmin.auth.users.all:read
+      - oauth2:
+        - jasmin.auth.users.all:read
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-          description: ""
+                $ref: '#/components/schemas/User'
+          description: ''
   /api/v1/users/{username}/services/:
     get:
       operationId: users_services_retrieve
       description: List the services of a given user.
       parameters:
-        - in: path
-          name: username
-          schema:
-            type: string
-            description:
-              Required. 150 characters or fewer. Letters, digits and @/./+/-/_
-              only.
-          required: true
+      - in: path
+        name: username
+        schema:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+        required: true
       tags:
-        - users
+      - users
       security:
-        - oauth2:
-            - jasmin.services.userservices.all:read
+      - oauth2:
+        - jasmin.services.userservices.all:read
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -258,10 +263,10 @@ components:
           type: integer
           readOnly: true
         user:
-          $ref: "#/components/schemas/ServiceUser"
+          $ref: '#/components/schemas/ServiceUser'
       required:
-        - id
-        - user
+      - id
+      - user
     Account:
       type: object
       properties:
@@ -279,8 +284,7 @@ components:
         ssh_key:
           type: string
           title: SSH Public Key
-          description:
-            For help generating SSH keys, see <a href="https://help.jasmin.ac.uk/article/185-generate-ssh-key-pair">the
+          description: For help generating SSH keys, see <a href="https://help.jasmin.ac.uk/article/185-generate-ssh-key-pair">the
             JASMIN documentation</a>
         tags:
           type: string
@@ -305,12 +309,12 @@ components:
           type: string
           maxLength: 250
       required:
-        - full_name
-        - surname
-        - username
+      - full_name
+      - surname
+      - username
     BlankEnum:
       enum:
-        - ""
+      - ''
     Category:
       type: object
       description: Details of a service category.
@@ -335,20 +339,19 @@ components:
           type: integer
           maximum: 2147483647
           minimum: 0
-          description:
-            Number defining where the category appears in listings. Categories
+          description: Number defining where the category appears in listings. Categories
             are ordered in ascending order by this field, then alphabetically by name
             within that.
         services:
           type: array
           items:
-            $ref: "#/components/schemas/CategoryService"
+            $ref: '#/components/schemas/CategoryService'
       required:
-        - id
-        - long_name
-        - name
-        - services
-        - url
+      - id
+      - long_name
+      - name
+      - services
+      - url
     CategoryList:
       type: object
       description: Basic information about a service category.
@@ -366,9 +369,9 @@ components:
           maxLength: 50
           pattern: ^[-a-zA-Z0-9_]+$
       required:
-        - id
-        - name
-        - url
+      - id
+      - name
+      - url
     CategoryService:
       type: object
       description: Simple details about a service, excluding it's category.
@@ -387,43 +390,41 @@ components:
           pattern: ^[-a-zA-Z0-9_]+$
         summary:
           type: string
-          description:
-            One-line description of the service, shown in listings. No
+          description: One-line description of the service, shown in listings. No
             special formatting allowed.
         hidden:
           type: boolean
-          description:
-            Prevents the service appearing in listings unless the user
+          description: Prevents the service appearing in listings unless the user
             has an active grant or request for it. The service details page will still
             be accessible to anybody who knows the URL.
       required:
-        - id
-        - name
-        - summary
-        - url
+      - id
+      - name
+      - summary
+      - url
     DegreeEnum:
       enum:
-        - First degree
-        - Postgraduate Master's
-        - Doctorate
-        - Other
+      - First degree
+      - Postgraduate Master's
+      - Doctorate
+      - Other
       type: string
     DisciplineEnum:
       enum:
-        - Atmospheric Physics
-        - Atmospheric Chemistry
-        - Climate Change
-        - Earth System Science
-        - Marine Science
-        - Terrestrial and Fresh Water
-        - Earth Observation
-        - Polar Science
-        - Geography
-        - Engineering
-        - Medical/Biological Sciences
-        - Mathematics/Computer Science
-        - Economics
-        - Other
+      - Atmospheric Physics
+      - Atmospheric Chemistry
+      - Climate Change
+      - Earth System Science
+      - Marine Science
+      - Terrestrial and Fresh Water
+      - Earth Observation
+      - Polar Science
+      - Geography
+      - Engineering
+      - Medical/Biological Sciences
+      - Mathematics/Computer Science
+      - Economics
+      - Other
       type: string
     InstitutionList:
       type: object
@@ -435,259 +436,259 @@ components:
           type: string
           maxLength: 200
       required:
-        - id
-        - name
+      - id
+      - name
     InstutionCountriesEnum:
       enum:
-        - GB
-        - AF
-        - AX
-        - AL
-        - DZ
-        - AS
-        - AD
-        - AO
-        - AI
-        - AQ
-        - AG
-        - AR
-        - AM
-        - AW
-        - AU
-        - AT
-        - AZ
-        - BS
-        - BH
-        - BD
-        - BB
-        - BY
-        - BE
-        - BZ
-        - BJ
-        - BM
-        - BT
-        - BO
-        - BQ
-        - BA
-        - BW
-        - BV
-        - BR
-        - IO
-        - BN
-        - BG
-        - BF
-        - BI
-        - CV
-        - KH
-        - CM
-        - CA
-        - KY
-        - CF
-        - TD
-        - CL
-        - CN
-        - CX
-        - CC
-        - CO
-        - KM
-        - CG
-        - CD
-        - CK
-        - CR
-        - CI
-        - HR
-        - CU
-        - CW
-        - CY
-        - CZ
-        - DK
-        - DJ
-        - DM
-        - DO
-        - EC
-        - EG
-        - SV
-        - GQ
-        - ER
-        - EE
-        - SZ
-        - ET
-        - FK
-        - FO
-        - FJ
-        - FI
-        - FR
-        - GF
-        - PF
-        - TF
-        - GA
-        - GM
-        - GE
-        - DE
-        - GH
-        - GI
-        - GR
-        - GL
-        - GD
-        - GP
-        - GU
-        - GT
-        - GG
-        - GN
-        - GW
-        - GY
-        - HT
-        - HM
-        - VA
-        - HN
-        - HK
-        - HU
-        - IS
-        - IN
-        - ID
-        - IR
-        - IQ
-        - IE
-        - IM
-        - IL
-        - IT
-        - JM
-        - JP
-        - JE
-        - JO
-        - KZ
-        - KE
-        - KI
-        - KW
-        - KG
-        - LA
-        - LV
-        - LB
-        - LS
-        - LR
-        - LY
-        - LI
-        - LT
-        - LU
-        - MO
-        - MG
-        - MW
-        - MY
-        - MV
-        - ML
-        - MT
-        - MH
-        - MQ
-        - MR
-        - MU
-        - YT
-        - MX
-        - FM
-        - MD
-        - MC
-        - MN
-        - ME
-        - MS
-        - MA
-        - MZ
-        - MM
-        - NA
-        - NR
-        - NP
-        - NL
-        - NC
-        - NZ
-        - NI
-        - NE
-        - NG
-        - NU
-        - NF
-        - KP
-        - MK
-        - MP
-        - "NO"
-        - OM
-        - PK
-        - PW
-        - PS
-        - PA
-        - PG
-        - PY
-        - PE
-        - PH
-        - PN
-        - PL
-        - PT
-        - PR
-        - QA
-        - RE
-        - RO
-        - RU
-        - RW
-        - BL
-        - SH
-        - KN
-        - LC
-        - MF
-        - PM
-        - VC
-        - WS
-        - SM
-        - ST
-        - SA
-        - SN
-        - RS
-        - SC
-        - SL
-        - SG
-        - SX
-        - SK
-        - SI
-        - SB
-        - SO
-        - ZA
-        - GS
-        - KR
-        - SS
-        - ES
-        - LK
-        - SD
-        - SR
-        - SJ
-        - SE
-        - CH
-        - SY
-        - TW
-        - TJ
-        - TZ
-        - TH
-        - TL
-        - TG
-        - TK
-        - TO
-        - TT
-        - TN
-        - TR
-        - TM
-        - TC
-        - TV
-        - UG
-        - UA
-        - AE
-        - UM
-        - US
-        - UY
-        - UZ
-        - VU
-        - VE
-        - VN
-        - VG
-        - VI
-        - WF
-        - EH
-        - YE
-        - ZM
-        - ZW
+      - GB
+      - AF
+      - AX
+      - AL
+      - DZ
+      - AS
+      - AD
+      - AO
+      - AI
+      - AQ
+      - AG
+      - AR
+      - AM
+      - AW
+      - AU
+      - AT
+      - AZ
+      - BS
+      - BH
+      - BD
+      - BB
+      - BY
+      - BE
+      - BZ
+      - BJ
+      - BM
+      - BT
+      - BO
+      - BQ
+      - BA
+      - BW
+      - BV
+      - BR
+      - IO
+      - BN
+      - BG
+      - BF
+      - BI
+      - CV
+      - KH
+      - CM
+      - CA
+      - KY
+      - CF
+      - TD
+      - CL
+      - CN
+      - CX
+      - CC
+      - CO
+      - KM
+      - CG
+      - CD
+      - CK
+      - CR
+      - CI
+      - HR
+      - CU
+      - CW
+      - CY
+      - CZ
+      - DK
+      - DJ
+      - DM
+      - DO
+      - EC
+      - EG
+      - SV
+      - GQ
+      - ER
+      - EE
+      - SZ
+      - ET
+      - FK
+      - FO
+      - FJ
+      - FI
+      - FR
+      - GF
+      - PF
+      - TF
+      - GA
+      - GM
+      - GE
+      - DE
+      - GH
+      - GI
+      - GR
+      - GL
+      - GD
+      - GP
+      - GU
+      - GT
+      - GG
+      - GN
+      - GW
+      - GY
+      - HT
+      - HM
+      - VA
+      - HN
+      - HK
+      - HU
+      - IS
+      - IN
+      - ID
+      - IR
+      - IQ
+      - IE
+      - IM
+      - IL
+      - IT
+      - JM
+      - JP
+      - JE
+      - JO
+      - KZ
+      - KE
+      - KI
+      - KW
+      - KG
+      - LA
+      - LV
+      - LB
+      - LS
+      - LR
+      - LY
+      - LI
+      - LT
+      - LU
+      - MO
+      - MG
+      - MW
+      - MY
+      - MV
+      - ML
+      - MT
+      - MH
+      - MQ
+      - MR
+      - MU
+      - YT
+      - MX
+      - FM
+      - MD
+      - MC
+      - MN
+      - ME
+      - MS
+      - MA
+      - MZ
+      - MM
+      - NA
+      - NR
+      - NP
+      - NL
+      - NC
+      - NZ
+      - NI
+      - NE
+      - NG
+      - NU
+      - NF
+      - KP
+      - MK
+      - MP
+      - 'NO'
+      - OM
+      - PK
+      - PW
+      - PS
+      - PA
+      - PG
+      - PY
+      - PE
+      - PH
+      - PN
+      - PL
+      - PT
+      - PR
+      - QA
+      - RE
+      - RO
+      - RU
+      - RW
+      - BL
+      - SH
+      - KN
+      - LC
+      - MF
+      - PM
+      - VC
+      - WS
+      - SM
+      - ST
+      - SA
+      - SN
+      - RS
+      - SC
+      - SL
+      - SG
+      - SX
+      - SK
+      - SI
+      - SB
+      - SO
+      - ZA
+      - GS
+      - KR
+      - SS
+      - ES
+      - LK
+      - SD
+      - SR
+      - SJ
+      - SE
+      - CH
+      - SY
+      - TW
+      - TJ
+      - TZ
+      - TH
+      - TL
+      - TG
+      - TK
+      - TO
+      - TT
+      - TN
+      - TR
+      - TM
+      - TC
+      - TV
+      - UG
+      - UA
+      - AE
+      - UM
+      - US
+      - UY
+      - UZ
+      - VU
+      - VE
+      - VN
+      - VG
+      - VI
+      - WF
+      - EH
+      - YE
+      - ZM
+      - ZW
       type: string
     Role:
       type: object
@@ -703,11 +704,11 @@ components:
         accesses:
           type: array
           items:
-            $ref: "#/components/schemas/Access"
+            $ref: '#/components/schemas/Access'
       required:
-        - accesses
-        - id
-        - name
+      - accesses
+      - id
+      - name
     RoleList:
       type: object
       description: Basic list of roles.
@@ -720,8 +721,8 @@ components:
           title: Role name
           maxLength: 50
       required:
-        - id
-        - name
+      - id
+      - name
     Service:
       type: object
       description: Full details of a service.
@@ -739,31 +740,27 @@ components:
           maxLength: 50
           pattern: ^[-a-zA-Z0-9_]+$
         category:
-          $ref: "#/components/schemas/CategoryList"
+          $ref: '#/components/schemas/CategoryList'
         roles:
           type: array
           items:
-            $ref: "#/components/schemas/RoleList"
+            $ref: '#/components/schemas/RoleList'
         summary:
           type: string
-          description:
-            One-line description of the service, shown in listings. No
+          description: One-line description of the service, shown in listings. No
             special formatting allowed.
         description:
           type: string
           nullable: true
-          description:
-            Full description of the service, shown on the details page.
+          description: Full description of the service, shown on the details page.
             Markdown formatting is allowed.
         approver_message:
           type: string
           nullable: true
-          description:
-            Service specific instructions to be added to the external approver
+          description: Service specific instructions to be added to the external approver
             message.
         instution_countries:
-          description:
-            Coutries a user's institute must be located to begin approval.
+          description: Coutries a user's institute must be located to begin approval.
             Hold ctrl or cmd for mac to select multiple countries. Leave blank for
             any country.
           type: array
@@ -771,28 +768,26 @@ components:
             $ref: "#/components/schemas/InstutionCountriesEnum"
         hidden:
           type: boolean
-          description:
-            Prevents the service appearing in listings unless the user
+          description: Prevents the service appearing in listings unless the user
             has an active grant or request for it. The service details page will still
             be accessible to anybody who knows the URL.
         position:
           type: integer
           maximum: 2147483647
           minimum: 0
-          description:
-            Number defining where the service appears in listings. Services
+          description: Number defining where the service appears in listings. Services
             are ordered in ascending order by category, then by this field, then alphabetically
             by name.
         ceda_managed:
           type: boolean
           description: Whether the service is managed by CEDA.
       required:
-        - category
-        - id
-        - name
-        - roles
-        - summary
-        - url
+      - category
+      - id
+      - name
+      - roles
+      - summary
+      - url
     ServiceList:
       type: object
       description: Simple details about a service.
@@ -805,7 +800,7 @@ components:
           format: uri
           readOnly: true
         category:
-          $ref: "#/components/schemas/CategoryList"
+          $ref: '#/components/schemas/CategoryList'
         name:
           type: string
           description: The name of the service. This is also used in URLs.
@@ -813,21 +808,19 @@ components:
           pattern: ^[-a-zA-Z0-9_]+$
         summary:
           type: string
-          description:
-            One-line description of the service, shown in listings. No
+          description: One-line description of the service, shown in listings. No
             special formatting allowed.
         hidden:
           type: boolean
-          description:
-            Prevents the service appearing in listings unless the user
+          description: Prevents the service appearing in listings unless the user
             has an active grant or request for it. The service details page will still
             be accessible to anybody who knows the URL.
       required:
-        - category
-        - id
-        - name
-        - summary
-        - url
+      - category
+      - id
+      - name
+      - summary
+      - url
     ServiceUser:
       type: object
       description: Basic UserSerializer to provide a link to the full one.
@@ -841,15 +834,14 @@ components:
           readOnly: true
         username:
           type: string
-          description:
-            Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
             only.
           pattern: ^[\w.@+-]+$
           maxLength: 150
       required:
-        - id
-        - url
-        - username
+      - id
+      - url
+      - username
     User:
       type: object
       properties:
@@ -857,20 +849,18 @@ components:
           type: integer
           readOnly: true
         account:
-          $ref: "#/components/schemas/Account"
+          $ref: '#/components/schemas/Account'
         last_login:
           type: string
           format: date-time
         is_superuser:
           type: boolean
           title: Superuser status
-          description:
-            Designates that this user has all permissions without explicitly
+          description: Designates that this user has all permissions without explicitly
             assigning them.
         username:
           type: string
-          description:
-            Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
             only.
           pattern: ^[\w.@+-]+$
           maxLength: 150
@@ -886,8 +876,7 @@ components:
         is_active:
           type: boolean
           title: Active
-          description:
-            Designates whether this user should be treated as active. Unselect
+          description: Designates whether this user should be treated as active. Unselect
             this instead of deleting accounts.
         date_joined:
           type: string
@@ -900,24 +889,21 @@ components:
           maxLength: 50
         discipline:
           allOf:
-            - $ref: "#/components/schemas/DisciplineEnum"
-          description:
-            Please select the closest match to the discipline that you
+          - $ref: '#/components/schemas/DisciplineEnum'
+          description: Please select the closest match to the discipline that you
             work in
         degree:
           description: The type of degree you are studying for, if applicable
           oneOf:
-            - $ref: "#/components/schemas/DegreeEnum"
-            - $ref: "#/components/schemas/BlankEnum"
+          - $ref: '#/components/schemas/DegreeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         internal_comment:
           type: string
-          description:
-            Internal notes about the user that will not be displayed to
+          description: Internal notes about the user that will not be displayed to
             the user
         service_user:
           type: boolean
-          description:
-            Indicates if this user is a service user, i.e. a user that
+          description: Indicates if this user is a service user, i.e. a user that
             exists to run a service rather than a regular user account.
         email_confirmed_at:
           type: string
@@ -935,16 +921,14 @@ components:
         internal_reason:
           type: string
           title: Reason for suspension (internal)
-          description:
-            Any internal details about the user's suspension that should
+          description: Any internal details about the user's suspension that should
             not be displayed to the user
         institution:
-          $ref: "#/components/schemas/InstitutionList"
+          $ref: '#/components/schemas/InstitutionList'
         otp_required:
           type: boolean
           title: OTP required?
-          description:
-            Indicates if OTP verification is required at all times for
+          description: Indicates if OTP verification is required at all times for
             this user.
         event:
           type: string
@@ -954,21 +938,21 @@ components:
         responsible_users:
           type: array
           items:
-            $ref: "#/components/schemas/UserList"
+            $ref: '#/components/schemas/UserList'
       required:
-        - account
-        - approved_for_root_at
-        - conditions_accepted_at
-        - date_joined
-        - discipline
-        - email_confirmed_at
-        - first_name
-        - id
-        - institution
-        - last_login
-        - last_name
-        - responsible_users
-        - username
+      - account
+      - approved_for_root_at
+      - conditions_accepted_at
+      - date_joined
+      - discipline
+      - email_confirmed_at
+      - first_name
+      - id
+      - institution
+      - last_login
+      - last_name
+      - responsible_users
+      - username
     UserList:
       type: object
       properties:
@@ -981,8 +965,7 @@ components:
           readOnly: true
         username:
           type: string
-          description:
-            Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
             only.
           pattern: ^[\w.@+-]+$
           maxLength: 150
@@ -993,17 +976,15 @@ components:
           type: string
           maxLength: 50
         institution:
-          $ref: "#/components/schemas/InstitutionList"
+          $ref: '#/components/schemas/InstitutionList'
         service_user:
           type: boolean
-          description:
-            Indicates if this user is a service user, i.e. a user that
+          description: Indicates if this user is a service user, i.e. a user that
             exists to run a service rather than a regular user account.
         is_active:
           type: boolean
           title: Active
-          description:
-            Designates whether this user should be treated as active. Unselect
+          description: Designates whether this user should be treated as active. Unselect
             this instead of deleting accounts.
         email:
           type: string
@@ -1011,12 +992,12 @@ components:
           title: Email address
           maxLength: 254
       required:
-        - first_name
-        - id
-        - institution
-        - last_name
-        - url
-        - username
+      - first_name
+      - id
+      - institution
+      - last_name
+      - url
+      - username
   securitySchemes:
     oauth2:
       type: oauth2

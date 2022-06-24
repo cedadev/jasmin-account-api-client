@@ -1,21 +1,32 @@
-from typing import Any, Dict, List, Optional
+import datetime
+from typing import Any, Dict, List, Optional, Union
 
 import httpx
 
 from ...client import AuthenticatedClient
 from ...models.role import Role
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     id: int,
     *,
     client: AuthenticatedClient,
+    on_date: Union[Unset, None, datetime.date] = UNSET,
 ) -> Dict[str, Any]:
     url = "{}/api/v1/services/{id}/roles/".format(client.base_url, id=id)
 
     headers: Dict[str, str] = client.get_headers()
     cookies: Dict[str, Any] = client.get_cookies()
+
+    params: Dict[str, Any] = {}
+    json_on_date: Union[Unset, None, str] = UNSET
+    if not isinstance(on_date, Unset):
+        json_on_date = on_date.isoformat() if on_date else None
+
+    params["on_date"] = json_on_date
+
+    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
     return {
         "method": "get",
@@ -23,6 +34,7 @@ def _get_kwargs(
         "headers": headers,
         "cookies": cookies,
         "timeout": client.get_timeout(),
+        "params": params,
     }
 
 
@@ -52,11 +64,13 @@ def sync_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
+    on_date: Union[Unset, None, datetime.date] = UNSET,
 ) -> Response[List[Role]]:
     """List roles in a services and their holders.
 
     Args:
         id (int):
+        on_date (Union[Unset, None, datetime.date]):
 
     Returns:
         Response[List[Role]]
@@ -65,6 +79,7 @@ def sync_detailed(
     kwargs = _get_kwargs(
         id=id,
         client=client,
+        on_date=on_date,
     )
 
     response = httpx.request(
@@ -79,11 +94,13 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
+    on_date: Union[Unset, None, datetime.date] = UNSET,
 ) -> Optional[List[Role]]:
     """List roles in a services and their holders.
 
     Args:
         id (int):
+        on_date (Union[Unset, None, datetime.date]):
 
     Returns:
         Response[List[Role]]
@@ -92,6 +109,7 @@ def sync(
     return sync_detailed(
         id=id,
         client=client,
+        on_date=on_date,
     ).parsed
 
 
@@ -99,11 +117,13 @@ async def asyncio_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
+    on_date: Union[Unset, None, datetime.date] = UNSET,
 ) -> Response[List[Role]]:
     """List roles in a services and their holders.
 
     Args:
         id (int):
+        on_date (Union[Unset, None, datetime.date]):
 
     Returns:
         Response[List[Role]]
@@ -112,6 +132,7 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         id=id,
         client=client,
+        on_date=on_date,
     )
 
     async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
@@ -124,11 +145,13 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
+    on_date: Union[Unset, None, datetime.date] = UNSET,
 ) -> Optional[List[Role]]:
     """List roles in a services and their holders.
 
     Args:
         id (int):
+        on_date (Union[Unset, None, datetime.date]):
 
     Returns:
         Response[List[Role]]
@@ -138,5 +161,6 @@ async def asyncio(
         await asyncio_detailed(
             id=id,
             client=client,
+            on_date=on_date,
         )
     ).parsed
