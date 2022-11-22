@@ -908,12 +908,15 @@ components:
         email_confirmed_at:
           type: string
           format: date-time
+          nullable: true
         conditions_accepted_at:
           type: string
           format: date-time
+          nullable: true
         approved_for_root_at:
           type: string
           format: date-time
+          nullable: true
         user_reason:
           type: string
           title: Reason for suspension (user)

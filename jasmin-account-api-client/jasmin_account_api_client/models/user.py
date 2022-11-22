@@ -1,5 +1,5 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Optional, Type, TypeVar, Union
 
 import attr
 from dateutil.parser import isoparse
@@ -27,9 +27,6 @@ class User:
         first_name (str):
         last_name (str):
         discipline (DisciplineEnum):
-        email_confirmed_at (datetime.datetime):
-        conditions_accepted_at (datetime.datetime):
-        approved_for_root_at (datetime.datetime):
         institution (InstitutionList):
         responsible_users (List[UserList]):
         is_superuser (Union[Unset, bool]): Designates that this user has all permissions without explicitly assigning
@@ -42,6 +39,9 @@ class User:
         internal_comment (Union[Unset, str]): Internal notes about the user that will not be displayed to the user
         service_user (Union[Unset, bool]): Indicates if this user is a service user, i.e. a user that exists to run a
             service rather than a regular user account.
+        email_confirmed_at (Optional[datetime.datetime]):
+        conditions_accepted_at (Optional[datetime.datetime]):
+        approved_for_root_at (Optional[datetime.datetime]):
         user_reason (Union[Unset, str]): Indicate why the user has been suspended
         internal_reason (Union[Unset, str]): Any internal details about the user's suspension that should not be
             displayed to the user
@@ -57,11 +57,11 @@ class User:
     first_name: str
     last_name: str
     discipline: DisciplineEnum
-    email_confirmed_at: datetime.datetime
-    conditions_accepted_at: datetime.datetime
-    approved_for_root_at: datetime.datetime
     institution: InstitutionList
     responsible_users: List[UserList]
+    email_confirmed_at: Optional[datetime.datetime]
+    conditions_accepted_at: Optional[datetime.datetime]
+    approved_for_root_at: Optional[datetime.datetime]
     is_superuser: Union[Unset, bool] = UNSET
     email: Union[Unset, str] = UNSET
     is_staff: Union[Unset, bool] = UNSET
@@ -87,12 +87,6 @@ class User:
         first_name = self.first_name
         last_name = self.last_name
         discipline = self.discipline.value
-
-        email_confirmed_at = self.email_confirmed_at.isoformat()
-
-        conditions_accepted_at = self.conditions_accepted_at.isoformat()
-
-        approved_for_root_at = self.approved_for_root_at.isoformat()
 
         institution = self.institution.to_dict()
 
@@ -122,6 +116,12 @@ class User:
 
         internal_comment = self.internal_comment
         service_user = self.service_user
+        email_confirmed_at = self.email_confirmed_at.isoformat() if self.email_confirmed_at else None
+
+        conditions_accepted_at = self.conditions_accepted_at.isoformat() if self.conditions_accepted_at else None
+
+        approved_for_root_at = self.approved_for_root_at.isoformat() if self.approved_for_root_at else None
+
         user_reason = self.user_reason
         internal_reason = self.internal_reason
         otp_required = self.otp_required
@@ -139,11 +139,11 @@ class User:
                 "first_name": first_name,
                 "last_name": last_name,
                 "discipline": discipline,
+                "institution": institution,
+                "responsible_users": responsible_users,
                 "email_confirmed_at": email_confirmed_at,
                 "conditions_accepted_at": conditions_accepted_at,
                 "approved_for_root_at": approved_for_root_at,
-                "institution": institution,
-                "responsible_users": responsible_users,
             }
         )
         if is_superuser is not UNSET:
@@ -189,12 +189,6 @@ class User:
         last_name = d.pop("last_name")
 
         discipline = DisciplineEnum(d.pop("discipline"))
-
-        email_confirmed_at = isoparse(d.pop("email_confirmed_at"))
-
-        conditions_accepted_at = isoparse(d.pop("conditions_accepted_at"))
-
-        approved_for_root_at = isoparse(d.pop("approved_for_root_at"))
 
         institution = InstitutionList.from_dict(d.pop("institution"))
 
@@ -246,6 +240,27 @@ class User:
 
         service_user = d.pop("service_user", UNSET)
 
+        _email_confirmed_at = d.pop("email_confirmed_at")
+        email_confirmed_at: Optional[datetime.datetime]
+        if _email_confirmed_at is None:
+            email_confirmed_at = None
+        else:
+            email_confirmed_at = isoparse(_email_confirmed_at)
+
+        _conditions_accepted_at = d.pop("conditions_accepted_at")
+        conditions_accepted_at: Optional[datetime.datetime]
+        if _conditions_accepted_at is None:
+            conditions_accepted_at = None
+        else:
+            conditions_accepted_at = isoparse(_conditions_accepted_at)
+
+        _approved_for_root_at = d.pop("approved_for_root_at")
+        approved_for_root_at: Optional[datetime.datetime]
+        if _approved_for_root_at is None:
+            approved_for_root_at = None
+        else:
+            approved_for_root_at = isoparse(_approved_for_root_at)
+
         user_reason = d.pop("user_reason", UNSET)
 
         internal_reason = d.pop("internal_reason", UNSET)
@@ -263,9 +278,6 @@ class User:
             first_name=first_name,
             last_name=last_name,
             discipline=discipline,
-            email_confirmed_at=email_confirmed_at,
-            conditions_accepted_at=conditions_accepted_at,
-            approved_for_root_at=approved_for_root_at,
             institution=institution,
             responsible_users=responsible_users,
             is_superuser=is_superuser,
@@ -275,6 +287,9 @@ class User:
             degree=degree,
             internal_comment=internal_comment,
             service_user=service_user,
+            email_confirmed_at=email_confirmed_at,
+            conditions_accepted_at=conditions_accepted_at,
+            approved_for_root_at=approved_for_root_at,
             user_reason=user_reason,
             internal_reason=internal_reason,
             otp_required=otp_required,
