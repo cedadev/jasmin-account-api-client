@@ -21,7 +21,6 @@ class User:
     Attributes:
         id (int):
         account (Account):
-        last_login (datetime.datetime):
         username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
         date_joined (datetime.datetime):
         first_name (str):
@@ -29,6 +28,7 @@ class User:
         discipline (DisciplineEnum):
         institution (InstitutionList):
         responsible_users (List[UserList]):
+        last_login (Optional[datetime.datetime]):
         is_superuser (Union[Unset, bool]): Designates that this user has all permissions without explicitly assigning
             them.
         email (Union[Unset, str]):
@@ -51,7 +51,6 @@ class User:
 
     id: int
     account: Account
-    last_login: datetime.datetime
     username: str
     date_joined: datetime.datetime
     first_name: str
@@ -59,6 +58,7 @@ class User:
     discipline: DisciplineEnum
     institution: InstitutionList
     responsible_users: List[UserList]
+    last_login: Optional[datetime.datetime]
     email_confirmed_at: Optional[datetime.datetime]
     conditions_accepted_at: Optional[datetime.datetime]
     approved_for_root_at: Optional[datetime.datetime]
@@ -79,8 +79,6 @@ class User:
         id = self.id
         account = self.account.to_dict()
 
-        last_login = self.last_login.isoformat()
-
         username = self.username
         date_joined = self.date_joined.isoformat()
 
@@ -95,6 +93,8 @@ class User:
             responsible_users_item = responsible_users_item_data.to_dict()
 
             responsible_users.append(responsible_users_item)
+
+        last_login = self.last_login.isoformat() if self.last_login else None
 
         is_superuser = self.is_superuser
         email = self.email
@@ -133,7 +133,6 @@ class User:
             {
                 "id": id,
                 "account": account,
-                "last_login": last_login,
                 "username": username,
                 "date_joined": date_joined,
                 "first_name": first_name,
@@ -141,6 +140,7 @@ class User:
                 "discipline": discipline,
                 "institution": institution,
                 "responsible_users": responsible_users,
+                "last_login": last_login,
                 "email_confirmed_at": email_confirmed_at,
                 "conditions_accepted_at": conditions_accepted_at,
                 "approved_for_root_at": approved_for_root_at,
@@ -178,8 +178,6 @@ class User:
 
         account = Account.from_dict(d.pop("account"))
 
-        last_login = isoparse(d.pop("last_login"))
-
         username = d.pop("username")
 
         date_joined = isoparse(d.pop("date_joined"))
@@ -198,6 +196,13 @@ class User:
             responsible_users_item = UserList.from_dict(responsible_users_item_data)
 
             responsible_users.append(responsible_users_item)
+
+        _last_login = d.pop("last_login")
+        last_login: Optional[datetime.datetime]
+        if _last_login is None:
+            last_login = None
+        else:
+            last_login = isoparse(_last_login)
 
         is_superuser = d.pop("is_superuser", UNSET)
 
@@ -272,7 +277,6 @@ class User:
         user = cls(
             id=id,
             account=account,
-            last_login=last_login,
             username=username,
             date_joined=date_joined,
             first_name=first_name,
@@ -280,6 +284,7 @@ class User:
             discipline=discipline,
             institution=institution,
             responsible_users=responsible_users,
+            last_login=last_login,
             is_superuser=is_superuser,
             email=email,
             is_staff=is_staff,

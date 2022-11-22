@@ -853,6 +853,7 @@ components:
         last_login:
           type: string
           format: date-time
+          nullable: true
         is_superuser:
           type: boolean
           title: Superuser status
