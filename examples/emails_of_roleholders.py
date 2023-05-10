@@ -20,7 +20,7 @@ client.client_credentials_flow(
 )
 
 # Get all the roles which are active in a service.
-service_roles = jservices.services_roles_retrieve.sync(SERVICE_ID, client=client)
+service_roles = jservices.services_roles_list.sync(SERVICE_ID, client=client)
 
 # Get their usernames.
 accesses = []

@@ -25,7 +25,7 @@ single_user = jusers.users_retrieve.sync("amanning", client=client)
 # Retrieve all users. Can filter by institution service_user and active status. Can also search and change ordering.
 all_users = jusers.users_list.sync(client=client, is_active=True, service_user=False)
 # Get all services a given user belongs to.
-user_services = jusers.users_services_retrieve.sync("amanning", client=client)
+user_services = jusers.users_services_list.sync("amanning", client=client)
 
 # Get all information about a single service, by service id..
 single_service = jservices.services_retrieve.sync(1, client=client)
@@ -34,7 +34,7 @@ all_services = jservices.services_list.sync(
     client=client, hidden=False, ceda_managed=False
 )
 # Get all the roles which are active in a service, by service id.
-service_users = jservices.services_roles_retrieve.sync(148, client=client)
+service_users = jservices.services_roles_list.sync(148, client=client)
 service_users = [x for x in service_users if x.name == "USER"][0]
 print(len(service_users.accesses))
 

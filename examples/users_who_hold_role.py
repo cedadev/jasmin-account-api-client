@@ -16,7 +16,7 @@ client.client_credentials_flow(
 )
 
 # Get all the roles which are active in a service.
-service_roles = jservices.services_roles_retrieve.sync(SERVICE_ID, client=client)
+service_roles = jservices.services_roles_list.sync(SERVICE_ID, client=client)
 # If there are no roles service_roles will be None.
 if service_roles:
     # Select role by name.
