@@ -1,8 +1,10 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
 import attr
 
-from ..models.service_user import ServiceUser
+if TYPE_CHECKING:
+    from ..models.service_user import ServiceUser
+
 
 T = TypeVar("T", bound="Access")
 
@@ -17,7 +19,7 @@ class Access:
     """
 
     id: int
-    user: ServiceUser
+    user: "ServiceUser"
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -37,6 +39,8 @@ class Access:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.service_user import ServiceUser
+
         d = src_dict.copy()
         id = d.pop("id")
 

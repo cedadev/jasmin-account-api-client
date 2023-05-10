@@ -1,8 +1,10 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
 
 import attr
 
-from ..models.access import Access
+if TYPE_CHECKING:
+    from ..models.access import Access
+
 
 T = TypeVar("T", bound="Role")
 
@@ -14,12 +16,12 @@ class Role:
     Attributes:
         id (int):
         name (str):
-        accesses (List[Access]):
+        accesses (List['Access']):
     """
 
     id: int
     name: str
-    accesses: List[Access]
+    accesses: List["Access"]
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -45,6 +47,8 @@ class Role:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.access import Access
+
         d = src_dict.copy()
         id = d.pop("id")
 

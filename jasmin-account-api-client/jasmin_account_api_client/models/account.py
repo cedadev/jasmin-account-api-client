@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
 import attr
 
@@ -11,12 +11,10 @@ T = TypeVar("T", bound="Account")
 class Account:
     """
     Attributes:
-        username (str):
-        surname (str):
-        full_name (str):
-        ssh_key (Union[Unset, str]): For help generating SSH keys, see <a
-            href="https://help.jasmin.ac.uk/article/185-generate-ssh-key-pair">the JASMIN documentation</a>
-        tags (Union[Unset, str]):
+        tags (List[Any]):
+        username (Union[Unset, str]):
+        surname (Union[Unset, str]):
+        full_name (Union[Unset, str]):
         uid_number (Union[Unset, int]): Leave blank for default (next available uidNumber)
         uid (Union[Unset, str]): This is always overridden to match username
         home_directory (Union[Unset, str]): Leave blank for default (/home/users/{user})
@@ -24,11 +22,10 @@ class Account:
         login_shell (Union[Unset, str]):
     """
 
-    username: str
-    surname: str
-    full_name: str
-    ssh_key: Union[Unset, str] = UNSET
-    tags: Union[Unset, str] = UNSET
+    tags: List[Any]
+    username: Union[Unset, str] = UNSET
+    surname: Union[Unset, str] = UNSET
+    full_name: Union[Unset, str] = UNSET
     uid_number: Union[Unset, int] = UNSET
     uid: Union[Unset, str] = UNSET
     home_directory: Union[Unset, str] = UNSET
@@ -37,11 +34,11 @@ class Account:
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        tags = self.tags
+
         username = self.username
         surname = self.surname
         full_name = self.full_name
-        ssh_key = self.ssh_key
-        tags = self.tags
         uid_number = self.uid_number
         uid = self.uid
         home_directory = self.home_directory
@@ -52,15 +49,15 @@ class Account:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "username": username,
-                "surname": surname,
-                "full_name": full_name,
+                "tags": tags,
             }
         )
-        if ssh_key is not UNSET:
-            field_dict["ssh_key"] = ssh_key
-        if tags is not UNSET:
-            field_dict["tags"] = tags
+        if username is not UNSET:
+            field_dict["username"] = username
+        if surname is not UNSET:
+            field_dict["surname"] = surname
+        if full_name is not UNSET:
+            field_dict["full_name"] = full_name
         if uid_number is not UNSET:
             field_dict["uidNumber"] = uid_number
         if uid is not UNSET:
@@ -77,15 +74,13 @@ class Account:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        username = d.pop("username")
+        tags = cast(List[Any], d.pop("tags"))
 
-        surname = d.pop("surname")
+        username = d.pop("username", UNSET)
 
-        full_name = d.pop("full_name")
+        surname = d.pop("surname", UNSET)
 
-        ssh_key = d.pop("ssh_key", UNSET)
-
-        tags = d.pop("tags", UNSET)
+        full_name = d.pop("full_name", UNSET)
 
         uid_number = d.pop("uidNumber", UNSET)
 
@@ -98,11 +93,10 @@ class Account:
         login_shell = d.pop("loginShell", UNSET)
 
         account = cls(
+            tags=tags,
             username=username,
             surname=surname,
             full_name=full_name,
-            ssh_key=ssh_key,
-            tags=tags,
             uid_number=uid_number,
             uid=uid,
             home_directory=home_directory,

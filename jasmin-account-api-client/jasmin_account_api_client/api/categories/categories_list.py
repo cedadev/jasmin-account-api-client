@@ -1,8 +1,10 @@
+from http import HTTPStatus
 from typing import Any, Dict, List, Optional, Union
 
 import httpx
 
-from ...client import AuthenticatedClient
+from ... import errors
+from ...client import AuthenticatedClient, Client
 from ...models.category_list import CategoryList
 from ...types import UNSET, Response, Unset
 
@@ -34,12 +36,13 @@ def _get_kwargs(
         "headers": headers,
         "cookies": cookies,
         "timeout": client.get_timeout(),
+        "follow_redirects": client.follow_redirects,
         "params": params,
     }
 
 
-def _parse_response(*, response: httpx.Response) -> Optional[List[CategoryList]]:
-    if response.status_code == 200:
+def _parse_response(*, client: Client, response: httpx.Response) -> Optional[List["CategoryList"]]:
+    if response.status_code == HTTPStatus.OK:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
@@ -48,15 +51,18 @@ def _parse_response(*, response: httpx.Response) -> Optional[List[CategoryList]]
             response_200.append(response_200_item)
 
         return response_200
-    return None
+    if client.raise_on_unexpected_status:
+        raise errors.UnexpectedStatus(response.status_code, response.content)
+    else:
+        return None
 
 
-def _build_response(*, response: httpx.Response) -> Response[List[CategoryList]]:
+def _build_response(*, client: Client, response: httpx.Response) -> Response[List["CategoryList"]]:
     return Response(
-        status_code=response.status_code,
+        status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
-        parsed=_parse_response(response=response),
+        parsed=_parse_response(client=client, response=response),
     )
 
 
@@ -66,7 +72,7 @@ def sync_detailed(
     name: Union[Unset, None, str] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
-) -> Response[List[CategoryList]]:
+) -> Response[List["CategoryList"]]:
     """Details of services categories.
 
     Args:
@@ -74,8 +80,12 @@ def sync_detailed(
         ordering (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
 
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
     Returns:
-        Response[List[CategoryList]]
+        Response[List['CategoryList']]
     """
 
     kwargs = _get_kwargs(
@@ -90,7 +100,7 @@ def sync_detailed(
         **kwargs,
     )
 
-    return _build_response(response=response)
+    return _build_response(client=client, response=response)
 
 
 def sync(
@@ -99,7 +109,7 @@ def sync(
     name: Union[Unset, None, str] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
-) -> Optional[List[CategoryList]]:
+) -> Optional[List["CategoryList"]]:
     """Details of services categories.
 
     Args:
@@ -107,8 +117,12 @@ def sync(
         ordering (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
 
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
     Returns:
-        Response[List[CategoryList]]
+        List['CategoryList']
     """
 
     return sync_detailed(
@@ -125,7 +139,7 @@ async def asyncio_detailed(
     name: Union[Unset, None, str] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
-) -> Response[List[CategoryList]]:
+) -> Response[List["CategoryList"]]:
     """Details of services categories.
 
     Args:
@@ -133,8 +147,12 @@ async def asyncio_detailed(
         ordering (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
 
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
     Returns:
-        Response[List[CategoryList]]
+        Response[List['CategoryList']]
     """
 
     kwargs = _get_kwargs(
@@ -147,7 +165,7 @@ async def asyncio_detailed(
     async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
         response = await _client.request(**kwargs)
 
-    return _build_response(response=response)
+    return _build_response(client=client, response=response)
 
 
 async def asyncio(
@@ -156,7 +174,7 @@ async def asyncio(
     name: Union[Unset, None, str] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
-) -> Optional[List[CategoryList]]:
+) -> Optional[List["CategoryList"]]:
     """Details of services categories.
 
     Args:
@@ -164,8 +182,12 @@ async def asyncio(
         ordering (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
 
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
     Returns:
-        Response[List[CategoryList]]
+        List['CategoryList']
     """
 
     return (

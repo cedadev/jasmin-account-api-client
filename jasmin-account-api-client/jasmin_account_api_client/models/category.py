@@ -1,9 +1,12 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 import attr
 
-from ..models.category_service import CategoryService
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.category_service import CategoryService
+
 
 T = TypeVar("T", bound="Category")
 
@@ -17,7 +20,7 @@ class Category:
         url (str):
         name (str): Short name for the category, used in URLs
         long_name (str): Long name for the category, used for display
-        services (List[CategoryService]):
+        services (List['CategoryService']):
         position (Union[Unset, int]): Number defining where the category appears in listings. Categories are ordered in
             ascending order by this field, then alphabetically by name within that.
     """
@@ -26,7 +29,7 @@ class Category:
     url: str
     name: str
     long_name: str
-    services: List[CategoryService]
+    services: List["CategoryService"]
     position: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
@@ -61,6 +64,8 @@ class Category:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.category_service import CategoryService
+
         d = src_dict.copy()
         id = d.pop("id")
 

@@ -2,6 +2,26 @@
 from . import {{ endpoint.name }}
 {% endfor %}
 
+{% if endpoint_collection.tag == "services" %}
+import warnings
+
+def __getattr__(name):
+    if name == "services_roles_retrieve":
+        warnings.warn("services_roles_retrieve is deprecated, please use services_roles_list instead", FutureWarning)
+        return globals()["services_roles_list"]
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+{% endif %}
+
+{% if endpoint_collection.tag == "users" %}
+import warnings
+
+def __getattr__(name):
+    if name == "users_services_retrieve":
+        warnings.warn("users_services_retrieve is deprecated, please use users_services_list instead", FutureWarning)
+        return globals()["users_services_list"]
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+{% endif %}
+
 __all__ = [
 {% for endpoint in endpoint_collection.endpoints %}
     "{{ endpoint.name }}",

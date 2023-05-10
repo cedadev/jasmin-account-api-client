@@ -10,26 +10,18 @@ from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
+    username: str,
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/api/v1/services/".format(client.base_url)
+    url = "{}/api/v1/users/{username}/services/".format(client.base_url, username=username)
 
     headers: Dict[str, str] = client.get_headers()
     cookies: Dict[str, Any] = client.get_cookies()
 
     params: Dict[str, Any] = {}
-    params["category"] = category
-
-    params["ceda_managed"] = ceda_managed
-
-    params["hidden"] = hidden
-
     params["ordering"] = ordering
 
     params["search"] = search
@@ -73,20 +65,16 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Lis
 
 
 def sync_detailed(
+    username: str,
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
 ) -> Response[List["ServiceList"]]:
-    """View and get details of a service.
+    """List the services of a given user.
 
     Args:
-        category (Union[Unset, None, int]):
-        ceda_managed (Union[Unset, None, bool]):
-        hidden (Union[Unset, None, bool]):
+        username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
         ordering (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
 
@@ -99,10 +87,8 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
+        username=username,
         client=client,
-        category=category,
-        ceda_managed=ceda_managed,
-        hidden=hidden,
         ordering=ordering,
         search=search,
     )
@@ -116,20 +102,16 @@ def sync_detailed(
 
 
 def sync(
+    username: str,
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
 ) -> Optional[List["ServiceList"]]:
-    """View and get details of a service.
+    """List the services of a given user.
 
     Args:
-        category (Union[Unset, None, int]):
-        ceda_managed (Union[Unset, None, bool]):
-        hidden (Union[Unset, None, bool]):
+        username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
         ordering (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
 
@@ -142,30 +124,24 @@ def sync(
     """
 
     return sync_detailed(
+        username=username,
         client=client,
-        category=category,
-        ceda_managed=ceda_managed,
-        hidden=hidden,
         ordering=ordering,
         search=search,
     ).parsed
 
 
 async def asyncio_detailed(
+    username: str,
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
 ) -> Response[List["ServiceList"]]:
-    """View and get details of a service.
+    """List the services of a given user.
 
     Args:
-        category (Union[Unset, None, int]):
-        ceda_managed (Union[Unset, None, bool]):
-        hidden (Union[Unset, None, bool]):
+        username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
         ordering (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
 
@@ -178,10 +154,8 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
+        username=username,
         client=client,
-        category=category,
-        ceda_managed=ceda_managed,
-        hidden=hidden,
         ordering=ordering,
         search=search,
     )
@@ -193,20 +167,16 @@ async def asyncio_detailed(
 
 
 async def asyncio(
+    username: str,
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
 ) -> Optional[List["ServiceList"]]:
-    """View and get details of a service.
+    """List the services of a given user.
 
     Args:
-        category (Union[Unset, None, int]):
-        ceda_managed (Union[Unset, None, bool]):
-        hidden (Union[Unset, None, bool]):
+        username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
         ordering (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
 
@@ -220,10 +190,8 @@ async def asyncio(
 
     return (
         await asyncio_detailed(
+            username=username,
             client=client,
-            category=category,
-            ceda_managed=ceda_managed,
-            hidden=hidden,
             ordering=ordering,
             search=search,
         )

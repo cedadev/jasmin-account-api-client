@@ -1,16 +1,20 @@
 import datetime
-from typing import Any, Dict, List, Optional, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, TypeVar, Union
 
 import attr
 from dateutil.parser import isoparse
 
-from ..models.account import Account
 from ..models.blank_enum import BlankEnum
 from ..models.degree_enum import DegreeEnum
 from ..models.discipline_enum import DisciplineEnum
-from ..models.institution_list import InstitutionList
-from ..models.user_list import UserList
+from ..models.user_type_enum import UserTypeEnum
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.account import Account
+    from ..models.institution_list import InstitutionList
+    from ..models.user_list import UserList
+
 
 T = TypeVar("T", bound="User")
 
@@ -25,9 +29,22 @@ class User:
         date_joined (datetime.datetime):
         first_name (str):
         last_name (str):
-        discipline (DisciplineEnum):
+        discipline (DisciplineEnum): * `Atmospheric Physics` - Atmospheric Physics
+            * `Atmospheric Chemistry` - Atmospheric Chemistry
+            * `Climate Change` - Climate Change
+            * `Earth System Science` - Earth System Science
+            * `Marine Science` - Marine Science
+            * `Terrestrial and Fresh Water` - Terrestrial and Fresh Water
+            * `Earth Observation` - Earth Observation
+            * `Polar Science` - Polar Science
+            * `Geography` - Geography
+            * `Engineering` - Engineering
+            * `Medical/Biological Sciences` - Medical/Biological Sciences
+            * `Mathematics/Computer Science` - Mathematics/Computer Science
+            * `Economics` - Economics
+            * `Other` - Other
         institution (InstitutionList):
-        responsible_users (List[UserList]):
+        responsible_users (List['UserList']):
         last_login (Optional[datetime.datetime]):
         is_superuser (Union[Unset, bool]): Designates that this user has all permissions without explicitly assigning
             them.
@@ -36,9 +53,14 @@ class User:
         is_active (Union[Unset, bool]): Designates whether this user should be treated as active. Unselect this instead
             of deleting accounts.
         degree (Union[BlankEnum, DegreeEnum, Unset]): The type of degree you are studying for, if applicable
+
+            * `` - Not studying for a degree
+            * `First degree` - First Degree (Bachelor's / Undergraduate Master's)
+            * `Postgraduate Master's` - Postgraduate Master's
+            * `Doctorate` - Doctorate
+            * `Other` - Other
         internal_comment (Union[Unset, str]): Internal notes about the user that will not be displayed to the user
-        service_user (Union[Unset, bool]): Indicates if this user is a service user, i.e. a user that exists to run a
-            service rather than a regular user account.
+        service_user (Optional[bool]):
         email_confirmed_at (Optional[datetime.datetime]):
         conditions_accepted_at (Optional[datetime.datetime]):
         approved_for_root_at (Optional[datetime.datetime]):
@@ -47,18 +69,24 @@ class User:
             displayed to the user
         otp_required (Union[Unset, bool]): Indicates if OTP verification is required at all times for this user.
         event (Union[Unset, None, str]): Training event account has been set up for.
+        user_type (Union[Unset, UserTypeEnum]): * `STANDARD` - Standard
+            * `SERVICE` - Service User
+            * `TRAINING` - Training Account
+            * `SHARED` - Shared User
+        deactivated_at (Union[Unset, None, datetime.datetime]): Date on which this account was deactivated.
     """
 
     id: int
-    account: Account
+    account: "Account"
     username: str
     date_joined: datetime.datetime
     first_name: str
     last_name: str
     discipline: DisciplineEnum
-    institution: InstitutionList
-    responsible_users: List[UserList]
+    institution: "InstitutionList"
+    responsible_users: List["UserList"]
     last_login: Optional[datetime.datetime]
+    service_user: Optional[bool]
     email_confirmed_at: Optional[datetime.datetime]
     conditions_accepted_at: Optional[datetime.datetime]
     approved_for_root_at: Optional[datetime.datetime]
@@ -68,11 +96,12 @@ class User:
     is_active: Union[Unset, bool] = UNSET
     degree: Union[BlankEnum, DegreeEnum, Unset] = UNSET
     internal_comment: Union[Unset, str] = UNSET
-    service_user: Union[Unset, bool] = UNSET
     user_reason: Union[Unset, str] = UNSET
     internal_reason: Union[Unset, str] = UNSET
     otp_required: Union[Unset, bool] = UNSET
     event: Union[Unset, None, str] = UNSET
+    user_type: Union[Unset, UserTypeEnum] = UNSET
+    deactivated_at: Union[Unset, None, datetime.datetime] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -126,6 +155,13 @@ class User:
         internal_reason = self.internal_reason
         otp_required = self.otp_required
         event = self.event
+        user_type: Union[Unset, str] = UNSET
+        if not isinstance(self.user_type, Unset):
+            user_type = self.user_type.value
+
+        deactivated_at: Union[Unset, None, str] = UNSET
+        if not isinstance(self.deactivated_at, Unset):
+            deactivated_at = self.deactivated_at.isoformat() if self.deactivated_at else None
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -141,6 +177,7 @@ class User:
                 "institution": institution,
                 "responsible_users": responsible_users,
                 "last_login": last_login,
+                "service_user": service_user,
                 "email_confirmed_at": email_confirmed_at,
                 "conditions_accepted_at": conditions_accepted_at,
                 "approved_for_root_at": approved_for_root_at,
@@ -158,8 +195,6 @@ class User:
             field_dict["degree"] = degree
         if internal_comment is not UNSET:
             field_dict["internal_comment"] = internal_comment
-        if service_user is not UNSET:
-            field_dict["service_user"] = service_user
         if user_reason is not UNSET:
             field_dict["user_reason"] = user_reason
         if internal_reason is not UNSET:
@@ -168,11 +203,19 @@ class User:
             field_dict["otp_required"] = otp_required
         if event is not UNSET:
             field_dict["event"] = event
+        if user_type is not UNSET:
+            field_dict["user_type"] = user_type
+        if deactivated_at is not UNSET:
+            field_dict["deactivated_at"] = deactivated_at
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.account import Account
+        from ..models.institution_list import InstitutionList
+        from ..models.user_list import UserList
+
         d = src_dict.copy()
         id = d.pop("id")
 
@@ -243,7 +286,7 @@ class User:
 
         internal_comment = d.pop("internal_comment", UNSET)
 
-        service_user = d.pop("service_user", UNSET)
+        service_user = d.pop("service_user")
 
         _email_confirmed_at = d.pop("email_confirmed_at")
         email_confirmed_at: Optional[datetime.datetime]
@@ -274,6 +317,22 @@ class User:
 
         event = d.pop("event", UNSET)
 
+        _user_type = d.pop("user_type", UNSET)
+        user_type: Union[Unset, UserTypeEnum]
+        if isinstance(_user_type, Unset):
+            user_type = UNSET
+        else:
+            user_type = UserTypeEnum(_user_type)
+
+        _deactivated_at = d.pop("deactivated_at", UNSET)
+        deactivated_at: Union[Unset, None, datetime.datetime]
+        if _deactivated_at is None:
+            deactivated_at = None
+        elif isinstance(_deactivated_at, Unset):
+            deactivated_at = UNSET
+        else:
+            deactivated_at = isoparse(_deactivated_at)
+
         user = cls(
             id=id,
             account=account,
@@ -299,6 +358,8 @@ class User:
             internal_reason=internal_reason,
             otp_required=otp_required,
             event=event,
+            user_type=user_type,
+            deactivated_at=deactivated_at,
         )
 
         user.additional_properties = d

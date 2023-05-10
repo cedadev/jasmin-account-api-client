@@ -1,9 +1,13 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, TypeVar, Union
 
 import attr
 
-from ..models.institution_list import InstitutionList
+from ..models.user_type_enum import UserTypeEnum
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.institution_list import InstitutionList
+
 
 T = TypeVar("T", bound="UserList")
 
@@ -18,11 +22,14 @@ class UserList:
         first_name (str):
         last_name (str):
         institution (InstitutionList):
-        service_user (Union[Unset, bool]): Indicates if this user is a service user, i.e. a user that exists to run a
-            service rather than a regular user account.
+        service_user (Optional[bool]):
         is_active (Union[Unset, bool]): Designates whether this user should be treated as active. Unselect this instead
             of deleting accounts.
         email (Union[Unset, str]):
+        user_type (Union[Unset, UserTypeEnum]): * `STANDARD` - Standard
+            * `SERVICE` - Service User
+            * `TRAINING` - Training Account
+            * `SHARED` - Shared User
     """
 
     id: int
@@ -30,10 +37,11 @@ class UserList:
     username: str
     first_name: str
     last_name: str
-    institution: InstitutionList
-    service_user: Union[Unset, bool] = UNSET
+    institution: "InstitutionList"
+    service_user: Optional[bool]
     is_active: Union[Unset, bool] = UNSET
     email: Union[Unset, str] = UNSET
+    user_type: Union[Unset, UserTypeEnum] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -47,6 +55,9 @@ class UserList:
         service_user = self.service_user
         is_active = self.is_active
         email = self.email
+        user_type: Union[Unset, str] = UNSET
+        if not isinstance(self.user_type, Unset):
+            user_type = self.user_type.value
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -58,19 +69,22 @@ class UserList:
                 "first_name": first_name,
                 "last_name": last_name,
                 "institution": institution,
+                "service_user": service_user,
             }
         )
-        if service_user is not UNSET:
-            field_dict["service_user"] = service_user
         if is_active is not UNSET:
             field_dict["is_active"] = is_active
         if email is not UNSET:
             field_dict["email"] = email
+        if user_type is not UNSET:
+            field_dict["user_type"] = user_type
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.institution_list import InstitutionList
+
         d = src_dict.copy()
         id = d.pop("id")
 
@@ -84,11 +98,18 @@ class UserList:
 
         institution = InstitutionList.from_dict(d.pop("institution"))
 
-        service_user = d.pop("service_user", UNSET)
+        service_user = d.pop("service_user")
 
         is_active = d.pop("is_active", UNSET)
 
         email = d.pop("email", UNSET)
+
+        _user_type = d.pop("user_type", UNSET)
+        user_type: Union[Unset, UserTypeEnum]
+        if isinstance(_user_type, Unset):
+            user_type = UNSET
+        else:
+            user_type = UserTypeEnum(_user_type)
 
         user_list = cls(
             id=id,
@@ -100,6 +121,7 @@ class UserList:
             service_user=service_user,
             is_active=is_active,
             email=email,
+            user_type=user_type,
         )
 
         user_list.additional_properties = d

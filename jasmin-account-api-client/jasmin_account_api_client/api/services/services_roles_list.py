@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any, Dict, List, Optional, Union
 
@@ -5,20 +6,22 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.service_list import ServiceList
+from ...models.role import Role
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
+    id: int,
     *,
     client: AuthenticatedClient,
     category: Union[Unset, None, int] = UNSET,
     ceda_managed: Union[Unset, None, bool] = UNSET,
     hidden: Union[Unset, None, bool] = UNSET,
+    on_date: Union[Unset, None, datetime.date] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/api/v1/services/".format(client.base_url)
+    url = "{}/api/v1/services/{id}/roles/".format(client.base_url, id=id)
 
     headers: Dict[str, str] = client.get_headers()
     cookies: Dict[str, Any] = client.get_cookies()
@@ -29,6 +32,12 @@ def _get_kwargs(
     params["ceda_managed"] = ceda_managed
 
     params["hidden"] = hidden
+
+    json_on_date: Union[Unset, None, str] = UNSET
+    if not isinstance(on_date, Unset):
+        json_on_date = on_date.isoformat() if on_date else None
+
+    params["on_date"] = json_on_date
 
     params["ordering"] = ordering
 
@@ -47,12 +56,12 @@ def _get_kwargs(
     }
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[List["ServiceList"]]:
+def _parse_response(*, client: Client, response: httpx.Response) -> Optional[List["Role"]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = ServiceList.from_dict(response_200_item_data)
+            response_200_item = Role.from_dict(response_200_item_data)
 
             response_200.append(response_200_item)
 
@@ -63,7 +72,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Lis
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[List["ServiceList"]]:
+def _build_response(*, client: Client, response: httpx.Response) -> Response[List["Role"]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -73,20 +82,24 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Lis
 
 
 def sync_detailed(
+    id: int,
     *,
     client: AuthenticatedClient,
     category: Union[Unset, None, int] = UNSET,
     ceda_managed: Union[Unset, None, bool] = UNSET,
     hidden: Union[Unset, None, bool] = UNSET,
+    on_date: Union[Unset, None, datetime.date] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
-) -> Response[List["ServiceList"]]:
-    """View and get details of a service.
+) -> Response[List["Role"]]:
+    """List roles in a services and their holders.
 
     Args:
+        id (int):
         category (Union[Unset, None, int]):
         ceda_managed (Union[Unset, None, bool]):
         hidden (Union[Unset, None, bool]):
+        on_date (Union[Unset, None, datetime.date]):
         ordering (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
 
@@ -95,14 +108,16 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[List['ServiceList']]
+        Response[List['Role']]
     """
 
     kwargs = _get_kwargs(
+        id=id,
         client=client,
         category=category,
         ceda_managed=ceda_managed,
         hidden=hidden,
+        on_date=on_date,
         ordering=ordering,
         search=search,
     )
@@ -116,20 +131,24 @@ def sync_detailed(
 
 
 def sync(
+    id: int,
     *,
     client: AuthenticatedClient,
     category: Union[Unset, None, int] = UNSET,
     ceda_managed: Union[Unset, None, bool] = UNSET,
     hidden: Union[Unset, None, bool] = UNSET,
+    on_date: Union[Unset, None, datetime.date] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
-) -> Optional[List["ServiceList"]]:
-    """View and get details of a service.
+) -> Optional[List["Role"]]:
+    """List roles in a services and their holders.
 
     Args:
+        id (int):
         category (Union[Unset, None, int]):
         ceda_managed (Union[Unset, None, bool]):
         hidden (Union[Unset, None, bool]):
+        on_date (Union[Unset, None, datetime.date]):
         ordering (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
 
@@ -138,34 +157,40 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        List['ServiceList']
+        List['Role']
     """
 
     return sync_detailed(
+        id=id,
         client=client,
         category=category,
         ceda_managed=ceda_managed,
         hidden=hidden,
+        on_date=on_date,
         ordering=ordering,
         search=search,
     ).parsed
 
 
 async def asyncio_detailed(
+    id: int,
     *,
     client: AuthenticatedClient,
     category: Union[Unset, None, int] = UNSET,
     ceda_managed: Union[Unset, None, bool] = UNSET,
     hidden: Union[Unset, None, bool] = UNSET,
+    on_date: Union[Unset, None, datetime.date] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
-) -> Response[List["ServiceList"]]:
-    """View and get details of a service.
+) -> Response[List["Role"]]:
+    """List roles in a services and their holders.
 
     Args:
+        id (int):
         category (Union[Unset, None, int]):
         ceda_managed (Union[Unset, None, bool]):
         hidden (Union[Unset, None, bool]):
+        on_date (Union[Unset, None, datetime.date]):
         ordering (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
 
@@ -174,14 +199,16 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[List['ServiceList']]
+        Response[List['Role']]
     """
 
     kwargs = _get_kwargs(
+        id=id,
         client=client,
         category=category,
         ceda_managed=ceda_managed,
         hidden=hidden,
+        on_date=on_date,
         ordering=ordering,
         search=search,
     )
@@ -193,20 +220,24 @@ async def asyncio_detailed(
 
 
 async def asyncio(
+    id: int,
     *,
     client: AuthenticatedClient,
     category: Union[Unset, None, int] = UNSET,
     ceda_managed: Union[Unset, None, bool] = UNSET,
     hidden: Union[Unset, None, bool] = UNSET,
+    on_date: Union[Unset, None, datetime.date] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
-) -> Optional[List["ServiceList"]]:
-    """View and get details of a service.
+) -> Optional[List["Role"]]:
+    """List roles in a services and their holders.
 
     Args:
+        id (int):
         category (Union[Unset, None, int]):
         ceda_managed (Union[Unset, None, bool]):
         hidden (Union[Unset, None, bool]):
+        on_date (Union[Unset, None, datetime.date]):
         ordering (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
 
@@ -215,15 +246,17 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        List['ServiceList']
+        List['Role']
     """
 
     return (
         await asyncio_detailed(
+            id=id,
             client=client,
             category=category,
             ceda_managed=ceda_managed,
             hidden=hidden,
+            on_date=on_date,
             ordering=ordering,
             search=search,
         )

@@ -1,8 +1,10 @@
+from http import HTTPStatus
 from typing import Any, Dict, Optional
 
 import httpx
 
-from ...client import AuthenticatedClient
+from ... import errors
+from ...client import AuthenticatedClient, Client
 from ...models.user import User
 from ...types import Response
 
@@ -23,23 +25,27 @@ def _get_kwargs(
         "headers": headers,
         "cookies": cookies,
         "timeout": client.get_timeout(),
+        "follow_redirects": client.follow_redirects,
     }
 
 
-def _parse_response(*, response: httpx.Response) -> Optional[User]:
-    if response.status_code == 200:
+def _parse_response(*, client: Client, response: httpx.Response) -> Optional[User]:
+    if response.status_code == HTTPStatus.OK:
         response_200 = User.from_dict(response.json())
 
         return response_200
-    return None
+    if client.raise_on_unexpected_status:
+        raise errors.UnexpectedStatus(response.status_code, response.content)
+    else:
+        return None
 
 
-def _build_response(*, response: httpx.Response) -> Response[User]:
+def _build_response(*, client: Client, response: httpx.Response) -> Response[User]:
     return Response(
-        status_code=response.status_code,
+        status_code=HTTPStatus(response.status_code),
         content=response.content,
         headers=response.headers,
-        parsed=_parse_response(response=response),
+        parsed=_parse_response(client=client, response=response),
     )
 
 
@@ -52,6 +58,10 @@ def sync_detailed(
 
     Args:
         username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
         Response[User]
@@ -67,7 +77,7 @@ def sync_detailed(
         **kwargs,
     )
 
-    return _build_response(response=response)
+    return _build_response(client=client, response=response)
 
 
 def sync(
@@ -80,8 +90,12 @@ def sync(
     Args:
         username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
 
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
     Returns:
-        Response[User]
+        User
     """
 
     return sync_detailed(
@@ -100,6 +114,10 @@ async def asyncio_detailed(
     Args:
         username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
 
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
     Returns:
         Response[User]
     """
@@ -112,7 +130,7 @@ async def asyncio_detailed(
     async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
         response = await _client.request(**kwargs)
 
-    return _build_response(response=response)
+    return _build_response(client=client, response=response)
 
 
 async def asyncio(
@@ -125,8 +143,12 @@ async def asyncio(
     Args:
         username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
 
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
     Returns:
-        Response[User]
+        User
     """
 
     return (
