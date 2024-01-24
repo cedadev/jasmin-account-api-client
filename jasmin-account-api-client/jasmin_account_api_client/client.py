@@ -281,9 +281,9 @@ class AuthenticatedClient:
             client=oauthlib.oauth2.BackendApplicationClient(client_id),
             scope=scopes,
         )
-        self.token_response = oauth.fetch_token(
-            token_url=f"{self.base_url}/oauth/token/",
+        token_response = oauth.fetch_token(
+            token_url=f"{self._base_url}/oauth/token/",
             auth=requests.auth.HTTPBasicAuth(client_id, client_secret),
             scope=" ".join(scopes),
         )
-        self.token = self.token_response["access_token"]
+        self.token = token_response["access_token"]
