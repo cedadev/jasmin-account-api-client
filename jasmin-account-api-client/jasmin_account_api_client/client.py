@@ -8,13 +8,6 @@ import requests_oauthlib
 from attrs import define, evolve, field
 
 
-def httpx_args_factory() -> dict[str, Any]:
-    """Factory to create the httpx args after setting some defaults."""
-    httpx_args = {}
-    httpx_args["transport"] = httpx.HTTPTransport(retries=5)
-    return httpx_args
-
-
 @define
 class Client:
     """A class for keeping track of data related to the API
@@ -51,7 +44,7 @@ class Client:
     _timeout: Optional[httpx.Timeout] = field(default=None, kw_only=True)
     _verify_ssl: Union[str, bool, ssl.SSLContext] = field(default=True, kw_only=True)
     _follow_redirects: bool = field(default=False, kw_only=True)
-    _httpx_args: Dict[str, Any] = field(factory=httpx_args_factory, kw_only=True)
+    _httpx_args: Dict[str, Any] = field(factory=dict, kw_only=True)
     _client: Optional[httpx.Client] = field(default=None, init=False)
     _async_client: Optional[httpx.AsyncClient] = field(default=None, init=False)
 
@@ -97,6 +90,7 @@ class Client:
                 timeout=self._timeout,
                 verify=self._verify_ssl,
                 follow_redirects=self._follow_redirects,
+                transport=httpx.HTTPTransport(retries=5),
                 **self._httpx_args,
             )
         return self._client
@@ -128,6 +122,7 @@ class Client:
                 timeout=self._timeout,
                 verify=self._verify_ssl,
                 follow_redirects=self._follow_redirects,
+                transport=httpx.AsyncHTTPTransport(retries=5),
                 **self._httpx_args,
             )
         return self._async_client
@@ -181,7 +176,7 @@ class AuthenticatedClient:
     _timeout: Optional[httpx.Timeout] = field(default=None, kw_only=True)
     _verify_ssl: Union[str, bool, ssl.SSLContext] = field(default=True, kw_only=True)
     _follow_redirects: bool = field(default=False, kw_only=True)
-    _httpx_args: Dict[str, Any] = field(factory=httpx_args_factory, kw_only=True)
+    _httpx_args: Dict[str, Any] = field(factory=dict, kw_only=True)
     _client: Optional[httpx.Client] = field(default=None, init=False)
     _async_client: Optional[httpx.AsyncClient] = field(default=None, init=False)
 
@@ -232,6 +227,7 @@ class AuthenticatedClient:
                 timeout=self._timeout,
                 verify=self._verify_ssl,
                 follow_redirects=self._follow_redirects,
+                transport=httpx.HTTPTransport(retries=5),
                 **self._httpx_args,
             )
         return self._client
@@ -264,6 +260,7 @@ class AuthenticatedClient:
                 timeout=self._timeout,
                 verify=self._verify_ssl,
                 follow_redirects=self._follow_redirects,
+                transport=httpx.AsyncHTTPTransport(retries=5),
                 **self._httpx_args,
             )
         return self._async_client
