@@ -11,17 +11,13 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
-    client: AuthenticatedClient,
     category: Union[Unset, None, int] = UNSET,
     ceda_managed: Union[Unset, None, bool] = UNSET,
     hidden: Union[Unset, None, bool] = UNSET,
     ordering: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/api/v1/services/".format(client.base_url)
-
-    headers: Dict[str, str] = client.get_headers()
-    cookies: Dict[str, Any] = client.get_cookies()
+    pass
 
     params: Dict[str, Any] = {}
     params["category"] = category
@@ -38,16 +34,14 @@ def _get_kwargs(
 
     return {
         "method": "get",
-        "url": url,
-        "headers": headers,
-        "cookies": cookies,
-        "timeout": client.get_timeout(),
-        "follow_redirects": client.follow_redirects,
+        "url": "/api/v1/services/",
         "params": params,
     }
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[List["ServiceList"]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[List["ServiceList"]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = []
         _response_200 = response.json()
@@ -63,7 +57,9 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Lis
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[List["ServiceList"]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[List["ServiceList"]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -99,7 +95,6 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        client=client,
         category=category,
         ceda_managed=ceda_managed,
         hidden=hidden,
@@ -107,8 +102,7 @@ def sync_detailed(
         search=search,
     )
 
-    response = httpx.request(
-        verify=client.verify_ssl,
+    response = client.get_httpx_client().request(
         **kwargs,
     )
 
@@ -178,7 +172,6 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        client=client,
         category=category,
         ceda_managed=ceda_managed,
         hidden=hidden,
@@ -186,8 +179,7 @@ async def asyncio_detailed(
         search=search,
     )
 
-    async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
-        response = await _client.request(**kwargs)
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
 
