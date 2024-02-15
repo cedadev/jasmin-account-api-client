@@ -1,3 +1,4 @@
+---
 post_hooks:
   - "autoflake -i -r --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports ."
   - "isort ."
