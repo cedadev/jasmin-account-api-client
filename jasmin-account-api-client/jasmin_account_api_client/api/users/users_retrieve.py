@@ -12,14 +12,15 @@ from ...types import Response
 def _get_kwargs(
     username: str,
 ) -> Dict[str, Any]:
-    pass
 
-    return {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/users/{username}/".format(
             username=username,
         ),
     }
+
+    return _kwargs
 
 
 def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[User]:

@@ -23,7 +23,9 @@ class CategoryList:
 
     def to_dict(self) -> Dict[str, Any]:
         id = self.id
+
         url = self.url
+
         name = self.name
 
         field_dict: Dict[str, Any] = {}

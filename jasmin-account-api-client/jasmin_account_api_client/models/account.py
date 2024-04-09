@@ -38,12 +38,19 @@ class Account:
         tags = self.tags
 
         username = self.username
+
         surname = self.surname
+
         full_name = self.full_name
+
         uid_number = self.uid_number
+
         uid = self.uid
+
         home_directory = self.home_directory
+
         gid_number = self.gid_number
+
         login_shell = self.login_shell
 
         field_dict: Dict[str, Any] = {}

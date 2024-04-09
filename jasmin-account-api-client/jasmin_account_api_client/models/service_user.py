@@ -23,7 +23,9 @@ class ServiceUser:
 
     def to_dict(self) -> Dict[str, Any]:
         id = self.id
+
         url = self.url
+
         username = self.username
 
         field_dict: Dict[str, Any] = {}

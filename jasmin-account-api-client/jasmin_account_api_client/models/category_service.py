@@ -30,9 +30,13 @@ class CategoryService:
 
     def to_dict(self) -> Dict[str, Any]:
         id = self.id
+
         url = self.url
+
         name = self.name
+
         summary = self.summary
+
         hidden = self.hidden
 
         field_dict: Dict[str, Any] = {}

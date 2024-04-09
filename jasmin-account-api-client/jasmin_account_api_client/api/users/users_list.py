@@ -12,16 +12,16 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
-    institution: Union[Unset, None, int] = UNSET,
-    is_active: Union[Unset, None, bool] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
-    service_user: Union[Unset, None, bool] = UNSET,
-    user_type: Union[Unset, None, UsersListUserType] = UNSET,
+    institution: Union[Unset, int] = UNSET,
+    is_active: Union[Unset, bool] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
+    service_user: Union[Unset, bool] = UNSET,
+    user_type: Union[Unset, UsersListUserType] = UNSET,
 ) -> Dict[str, Any]:
-    pass
 
     params: Dict[str, Any] = {}
+
     params["institution"] = institution
 
     params["is_active"] = is_active
@@ -32,19 +32,21 @@ def _get_kwargs(
 
     params["service_user"] = service_user
 
-    json_user_type: Union[Unset, None, str] = UNSET
+    json_user_type: Union[Unset, str] = UNSET
     if not isinstance(user_type, Unset):
-        json_user_type = user_type.value if user_type else None
+        json_user_type = user_type.value
 
     params["user_type"] = json_user_type
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    return {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/users/",
         "params": params,
     }
+
+    return _kwargs
 
 
 def _parse_response(
@@ -79,22 +81,22 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    institution: Union[Unset, None, int] = UNSET,
-    is_active: Union[Unset, None, bool] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
-    service_user: Union[Unset, None, bool] = UNSET,
-    user_type: Union[Unset, None, UsersListUserType] = UNSET,
+    institution: Union[Unset, int] = UNSET,
+    is_active: Union[Unset, bool] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
+    service_user: Union[Unset, bool] = UNSET,
+    user_type: Union[Unset, UsersListUserType] = UNSET,
 ) -> Response[List["UserList"]]:
     """View jasmin_auth Users.
 
     Args:
-        institution (Union[Unset, None, int]):
-        is_active (Union[Unset, None, bool]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
-        service_user (Union[Unset, None, bool]):
-        user_type (Union[Unset, None, UsersListUserType]):
+        institution (Union[Unset, int]):
+        is_active (Union[Unset, bool]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
+        service_user (Union[Unset, bool]):
+        user_type (Union[Unset, UsersListUserType]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -123,22 +125,22 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    institution: Union[Unset, None, int] = UNSET,
-    is_active: Union[Unset, None, bool] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
-    service_user: Union[Unset, None, bool] = UNSET,
-    user_type: Union[Unset, None, UsersListUserType] = UNSET,
+    institution: Union[Unset, int] = UNSET,
+    is_active: Union[Unset, bool] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
+    service_user: Union[Unset, bool] = UNSET,
+    user_type: Union[Unset, UsersListUserType] = UNSET,
 ) -> Optional[List["UserList"]]:
     """View jasmin_auth Users.
 
     Args:
-        institution (Union[Unset, None, int]):
-        is_active (Union[Unset, None, bool]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
-        service_user (Union[Unset, None, bool]):
-        user_type (Union[Unset, None, UsersListUserType]):
+        institution (Union[Unset, int]):
+        is_active (Union[Unset, bool]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
+        service_user (Union[Unset, bool]):
+        user_type (Union[Unset, UsersListUserType]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -162,22 +164,22 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    institution: Union[Unset, None, int] = UNSET,
-    is_active: Union[Unset, None, bool] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
-    service_user: Union[Unset, None, bool] = UNSET,
-    user_type: Union[Unset, None, UsersListUserType] = UNSET,
+    institution: Union[Unset, int] = UNSET,
+    is_active: Union[Unset, bool] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
+    service_user: Union[Unset, bool] = UNSET,
+    user_type: Union[Unset, UsersListUserType] = UNSET,
 ) -> Response[List["UserList"]]:
     """View jasmin_auth Users.
 
     Args:
-        institution (Union[Unset, None, int]):
-        is_active (Union[Unset, None, bool]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
-        service_user (Union[Unset, None, bool]):
-        user_type (Union[Unset, None, UsersListUserType]):
+        institution (Union[Unset, int]):
+        is_active (Union[Unset, bool]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
+        service_user (Union[Unset, bool]):
+        user_type (Union[Unset, UsersListUserType]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -204,22 +206,22 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    institution: Union[Unset, None, int] = UNSET,
-    is_active: Union[Unset, None, bool] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
-    service_user: Union[Unset, None, bool] = UNSET,
-    user_type: Union[Unset, None, UsersListUserType] = UNSET,
+    institution: Union[Unset, int] = UNSET,
+    is_active: Union[Unset, bool] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
+    service_user: Union[Unset, bool] = UNSET,
+    user_type: Union[Unset, UsersListUserType] = UNSET,
 ) -> Optional[List["UserList"]]:
     """View jasmin_auth Users.
 
     Args:
-        institution (Union[Unset, None, int]):
-        is_active (Union[Unset, None, bool]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
-        service_user (Union[Unset, None, bool]):
-        user_type (Union[Unset, None, UsersListUserType]):
+        institution (Union[Unset, int]):
+        is_active (Union[Unset, bool]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
+        service_user (Union[Unset, bool]):
+        user_type (Union[Unset, UsersListUserType]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

@@ -27,11 +27,12 @@ class Role:
 
     def to_dict(self) -> Dict[str, Any]:
         id = self.id
+
         name = self.name
+
         accesses = []
         for accesses_item_data in self.accesses:
             accesses_item = accesses_item_data.to_dict()
-
             accesses.append(accesses_item)
 
         field_dict: Dict[str, Any] = {}

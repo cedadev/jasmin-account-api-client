@@ -11,15 +11,15 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    category: Union[Unset, int] = UNSET,
+    ceda_managed: Union[Unset, bool] = UNSET,
+    hidden: Union[Unset, bool] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    pass
 
     params: Dict[str, Any] = {}
+
     params["category"] = category
 
     params["ceda_managed"] = ceda_managed
@@ -32,11 +32,13 @@ def _get_kwargs(
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    return {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/services/",
         "params": params,
     }
+
+    return _kwargs
 
 
 def _parse_response(
@@ -71,20 +73,20 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    category: Union[Unset, int] = UNSET,
+    ceda_managed: Union[Unset, bool] = UNSET,
+    hidden: Union[Unset, bool] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Response[List["ServiceList"]]:
     """View and get details of a service.
 
     Args:
-        category (Union[Unset, None, int]):
-        ceda_managed (Union[Unset, None, bool]):
-        hidden (Union[Unset, None, bool]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        category (Union[Unset, int]):
+        ceda_managed (Union[Unset, bool]):
+        hidden (Union[Unset, bool]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -112,20 +114,20 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    category: Union[Unset, int] = UNSET,
+    ceda_managed: Union[Unset, bool] = UNSET,
+    hidden: Union[Unset, bool] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Optional[List["ServiceList"]]:
     """View and get details of a service.
 
     Args:
-        category (Union[Unset, None, int]):
-        ceda_managed (Union[Unset, None, bool]):
-        hidden (Union[Unset, None, bool]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        category (Union[Unset, int]):
+        ceda_managed (Union[Unset, bool]):
+        hidden (Union[Unset, bool]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -148,20 +150,20 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    category: Union[Unset, int] = UNSET,
+    ceda_managed: Union[Unset, bool] = UNSET,
+    hidden: Union[Unset, bool] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Response[List["ServiceList"]]:
     """View and get details of a service.
 
     Args:
-        category (Union[Unset, None, int]):
-        ceda_managed (Union[Unset, None, bool]):
-        hidden (Union[Unset, None, bool]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        category (Union[Unset, int]):
+        ceda_managed (Union[Unset, bool]):
+        hidden (Union[Unset, bool]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -187,20 +189,20 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    category: Union[Unset, int] = UNSET,
+    ceda_managed: Union[Unset, bool] = UNSET,
+    hidden: Union[Unset, bool] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Optional[List["ServiceList"]]:
     """View and get details of a service.
 
     Args:
-        category (Union[Unset, None, int]):
-        ceda_managed (Union[Unset, None, bool]):
-        hidden (Union[Unset, None, bool]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        category (Union[Unset, int]):
+        ceda_managed (Union[Unset, bool]):
+        hidden (Union[Unset, bool]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

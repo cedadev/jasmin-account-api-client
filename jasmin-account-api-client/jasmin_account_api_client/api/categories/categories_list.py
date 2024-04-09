@@ -11,13 +11,13 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
-    name: Union[Unset, None, str] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    pass
 
     params: Dict[str, Any] = {}
+
     params["name"] = name
 
     params["ordering"] = ordering
@@ -26,11 +26,13 @@ def _get_kwargs(
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    return {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/categories/",
         "params": params,
     }
+
+    return _kwargs
 
 
 def _parse_response(
@@ -65,16 +67,16 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    name: Union[Unset, None, str] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Response[List["CategoryList"]]:
     """Details of services categories.
 
     Args:
-        name (Union[Unset, None, str]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        name (Union[Unset, str]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -100,16 +102,16 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    name: Union[Unset, None, str] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Optional[List["CategoryList"]]:
     """Details of services categories.
 
     Args:
-        name (Union[Unset, None, str]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        name (Union[Unset, str]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -130,16 +132,16 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    name: Union[Unset, None, str] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Response[List["CategoryList"]]:
     """Details of services categories.
 
     Args:
-        name (Union[Unset, None, str]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        name (Union[Unset, str]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -163,16 +165,16 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    name: Union[Unset, None, str] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Optional[List["CategoryList"]]:
     """Details of services categories.
 
     Args:
-        name (Union[Unset, None, str]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        name (Union[Unset, str]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

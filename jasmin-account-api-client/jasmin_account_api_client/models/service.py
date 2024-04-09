@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -27,9 +27,9 @@ class Service:
         roles (List['RoleList']):
         summary (str): One-line description of the service, shown in listings. No special formatting allowed.
         institution_countries (List[Union[BlankEnum, InstitutionCountriesEnum]]):
-        description (Union[Unset, None, str]): Full description of the service, shown on the details page. Markdown
+        description (Union[None, Unset, str]): Full description of the service, shown on the details page. Markdown
             formatting is allowed.
-        approver_message (Union[Unset, None, str]): Service specific instructions to be added to the external approver
+        approver_message (Union[None, Unset, str]): Service specific instructions to be added to the external approver
             message.
         hidden (Union[Unset, bool]): Prevents the service appearing in listings unless the user has an active grant or
             request for it. The service details page will still be accessible to anybody who knows the URL.
@@ -45,8 +45,8 @@ class Service:
     roles: List["RoleList"]
     summary: str
     institution_countries: List[Union[BlankEnum, InstitutionCountriesEnum]]
-    description: Union[Unset, None, str] = UNSET
-    approver_message: Union[Unset, None, str] = UNSET
+    description: Union[None, Unset, str] = UNSET
+    approver_message: Union[None, Unset, str] = UNSET
     hidden: Union[Unset, bool] = UNSET
     position: Union[Unset, int] = UNSET
     ceda_managed: Union[Unset, bool] = UNSET
@@ -54,33 +54,46 @@ class Service:
 
     def to_dict(self) -> Dict[str, Any]:
         id = self.id
+
         url = self.url
+
         name = self.name
+
         category = self.category.to_dict()
 
         roles = []
         for roles_item_data in self.roles:
             roles_item = roles_item_data.to_dict()
-
             roles.append(roles_item)
 
         summary = self.summary
+
         institution_countries = []
         for institution_countries_item_data in self.institution_countries:
             institution_countries_item: str
-
             if isinstance(institution_countries_item_data, InstitutionCountriesEnum):
                 institution_countries_item = institution_countries_item_data.value
-
             else:
                 institution_countries_item = institution_countries_item_data.value
 
             institution_countries.append(institution_countries_item)
 
-        description = self.description
-        approver_message = self.approver_message
+        description: Union[None, Unset, str]
+        if isinstance(self.description, Unset):
+            description = UNSET
+        else:
+            description = self.description
+
+        approver_message: Union[None, Unset, str]
+        if isinstance(self.approver_message, Unset):
+            approver_message = UNSET
+        else:
+            approver_message = self.approver_message
+
         hidden = self.hidden
+
         position = self.position
+
         ceda_managed = self.ceda_managed
 
         field_dict: Dict[str, Any] = {}
@@ -155,9 +168,23 @@ class Service:
 
             institution_countries.append(institution_countries_item)
 
-        description = d.pop("description", UNSET)
+        def _parse_description(data: object) -> Union[None, Unset, str]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(Union[None, Unset, str], data)
 
-        approver_message = d.pop("approver_message", UNSET)
+        description = _parse_description(d.pop("description", UNSET))
+
+        def _parse_approver_message(data: object) -> Union[None, Unset, str]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(Union[None, Unset, str], data)
+
+        approver_message = _parse_approver_message(d.pop("approver_message", UNSET))
 
         hidden = d.pop("hidden", UNSET)
 

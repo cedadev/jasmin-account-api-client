@@ -25,6 +25,7 @@ class Access:
 
     def to_dict(self) -> Dict[str, Any]:
         id = self.id
+
         user = self.user.to_dict()
 
         field_dict: Dict[str, Any] = {}

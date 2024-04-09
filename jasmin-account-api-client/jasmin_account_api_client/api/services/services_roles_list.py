@@ -13,26 +13,25 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     id: int,
     *,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
-    on_date: Union[Unset, None, datetime.date] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    category: Union[Unset, int] = UNSET,
+    ceda_managed: Union[Unset, bool] = UNSET,
+    hidden: Union[Unset, bool] = UNSET,
+    on_date: Union[Unset, datetime.date] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    pass
 
     params: Dict[str, Any] = {}
+
     params["category"] = category
 
     params["ceda_managed"] = ceda_managed
 
     params["hidden"] = hidden
 
-    json_on_date: Union[Unset, None, str] = UNSET
+    json_on_date: Union[Unset, str] = UNSET
     if not isinstance(on_date, Unset):
-        json_on_date = on_date.isoformat() if on_date else None
-
+        json_on_date = on_date.isoformat()
     params["on_date"] = json_on_date
 
     params["ordering"] = ordering
@@ -41,13 +40,15 @@ def _get_kwargs(
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    return {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/services/{id}/roles/".format(
             id=id,
         ),
         "params": params,
     }
+
+    return _kwargs
 
 
 def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[List["Role"]]:
@@ -79,23 +80,23 @@ def sync_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
-    on_date: Union[Unset, None, datetime.date] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    category: Union[Unset, int] = UNSET,
+    ceda_managed: Union[Unset, bool] = UNSET,
+    hidden: Union[Unset, bool] = UNSET,
+    on_date: Union[Unset, datetime.date] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Response[List["Role"]]:
     """List roles in a services and their holders.
 
     Args:
         id (int):
-        category (Union[Unset, None, int]):
-        ceda_managed (Union[Unset, None, bool]):
-        hidden (Union[Unset, None, bool]):
-        on_date (Union[Unset, None, datetime.date]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        category (Union[Unset, int]):
+        ceda_managed (Union[Unset, bool]):
+        hidden (Union[Unset, bool]):
+        on_date (Union[Unset, datetime.date]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -126,23 +127,23 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
-    on_date: Union[Unset, None, datetime.date] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    category: Union[Unset, int] = UNSET,
+    ceda_managed: Union[Unset, bool] = UNSET,
+    hidden: Union[Unset, bool] = UNSET,
+    on_date: Union[Unset, datetime.date] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Optional[List["Role"]]:
     """List roles in a services and their holders.
 
     Args:
         id (int):
-        category (Union[Unset, None, int]):
-        ceda_managed (Union[Unset, None, bool]):
-        hidden (Union[Unset, None, bool]):
-        on_date (Union[Unset, None, datetime.date]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        category (Union[Unset, int]):
+        ceda_managed (Union[Unset, bool]):
+        hidden (Union[Unset, bool]):
+        on_date (Union[Unset, datetime.date]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -168,23 +169,23 @@ async def asyncio_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
-    on_date: Union[Unset, None, datetime.date] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    category: Union[Unset, int] = UNSET,
+    ceda_managed: Union[Unset, bool] = UNSET,
+    hidden: Union[Unset, bool] = UNSET,
+    on_date: Union[Unset, datetime.date] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Response[List["Role"]]:
     """List roles in a services and their holders.
 
     Args:
         id (int):
-        category (Union[Unset, None, int]):
-        ceda_managed (Union[Unset, None, bool]):
-        hidden (Union[Unset, None, bool]):
-        on_date (Union[Unset, None, datetime.date]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        category (Union[Unset, int]):
+        ceda_managed (Union[Unset, bool]):
+        hidden (Union[Unset, bool]):
+        on_date (Union[Unset, datetime.date]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -213,23 +214,23 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
-    category: Union[Unset, None, int] = UNSET,
-    ceda_managed: Union[Unset, None, bool] = UNSET,
-    hidden: Union[Unset, None, bool] = UNSET,
-    on_date: Union[Unset, None, datetime.date] = UNSET,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    category: Union[Unset, int] = UNSET,
+    ceda_managed: Union[Unset, bool] = UNSET,
+    hidden: Union[Unset, bool] = UNSET,
+    on_date: Union[Unset, datetime.date] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Optional[List["Role"]]:
     """List roles in a services and their holders.
 
     Args:
         id (int):
-        category (Union[Unset, None, int]):
-        ceda_managed (Union[Unset, None, bool]):
-        hidden (Union[Unset, None, bool]):
-        on_date (Union[Unset, None, datetime.date]):
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        category (Union[Unset, int]):
+        ceda_managed (Union[Unset, bool]):
+        hidden (Union[Unset, bool]):
+        on_date (Union[Unset, datetime.date]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -23,7 +23,7 @@ class UserList:
         first_name (str):
         last_name (str):
         institution (InstitutionList):
-        service_user (Optional[bool]):
+        service_user (Union[None, bool]):
         is_active (Union[Unset, bool]): Designates whether this user should be treated as active. Unselect this instead
             of deleting accounts.
         email (Union[Unset, str]):
@@ -39,7 +39,7 @@ class UserList:
     first_name: str
     last_name: str
     institution: "InstitutionList"
-    service_user: Optional[bool]
+    service_user: Union[None, bool]
     is_active: Union[Unset, bool] = UNSET
     email: Union[Unset, str] = UNSET
     user_type: Union[Unset, UserTypeEnum] = UNSET
@@ -47,15 +47,24 @@ class UserList:
 
     def to_dict(self) -> Dict[str, Any]:
         id = self.id
+
         url = self.url
+
         username = self.username
+
         first_name = self.first_name
+
         last_name = self.last_name
+
         institution = self.institution.to_dict()
 
+        service_user: Union[None, bool]
         service_user = self.service_user
+
         is_active = self.is_active
+
         email = self.email
+
         user_type: Union[Unset, str] = UNSET
         if not isinstance(self.user_type, Unset):
             user_type = self.user_type.value
@@ -99,7 +108,12 @@ class UserList:
 
         institution = InstitutionList.from_dict(d.pop("institution"))
 
-        service_user = d.pop("service_user")
+        def _parse_service_user(data: object) -> Union[None, bool]:
+            if data is None:
+                return data
+            return cast(Union[None, bool], data)
+
+        service_user = _parse_service_user(d.pop("service_user"))
 
         is_active = d.pop("is_active", UNSET)
 

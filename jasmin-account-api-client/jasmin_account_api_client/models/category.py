@@ -36,13 +36,16 @@ class Category:
 
     def to_dict(self) -> Dict[str, Any]:
         id = self.id
+
         url = self.url
+
         name = self.name
+
         long_name = self.long_name
+
         services = []
         for services_item_data in self.services:
             services_item = services_item_data.to_dict()
-
             services.append(services_item)
 
         position = self.position

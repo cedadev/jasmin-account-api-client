@@ -12,25 +12,27 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     username: str,
     *,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
-    pass
 
     params: Dict[str, Any] = {}
+
     params["ordering"] = ordering
 
     params["search"] = search
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    return {
+    _kwargs: Dict[str, Any] = {
         "method": "get",
         "url": "/api/v1/users/{username}/services/".format(
             username=username,
         ),
         "params": params,
     }
+
+    return _kwargs
 
 
 def _parse_response(
@@ -66,15 +68,15 @@ def sync_detailed(
     username: str,
     *,
     client: AuthenticatedClient,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Response[List["ServiceList"]]:
     """List the services of a given user.
 
     Args:
         username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -101,15 +103,15 @@ def sync(
     username: str,
     *,
     client: AuthenticatedClient,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Optional[List["ServiceList"]]:
     """List the services of a given user.
 
     Args:
         username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -131,15 +133,15 @@ async def asyncio_detailed(
     username: str,
     *,
     client: AuthenticatedClient,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Response[List["ServiceList"]]:
     """List the services of a given user.
 
     Args:
         username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -164,15 +166,15 @@ async def asyncio(
     username: str,
     *,
     client: AuthenticatedClient,
-    ordering: Union[Unset, None, str] = UNSET,
-    search: Union[Unset, None, str] = UNSET,
+    ordering: Union[Unset, str] = UNSET,
+    search: Union[Unset, str] = UNSET,
 ) -> Optional[List["ServiceList"]]:
     """List the services of a given user.
 
     Args:
         username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-        ordering (Union[Unset, None, str]):
-        search (Union[Unset, None, str]):
+        ordering (Union[Unset, str]):
+        search (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
