@@ -9,3 +9,4 @@ create-environ:
 
 generate:
 	${VIRTUAL_ENV}/bin/openapi-python-client update --path schema.yaml --custom-template-path=templates --config config.yaml
+	echo "Make sure you now check the dependencies in pyproject.toml align with those in https://github.com/openapi-generators/openapi-python-client/blob/main/openapi_python_client/templates/pyproject.toml.jinja"
