@@ -45,11 +45,13 @@ class User:
             * `Mathematics/Computer Science` - Mathematics/Computer Science
             * `Economics` - Economics
             * `Other` - Other
-        service_user (Union[None, bool]):
+        service_user (Union[None, bool]): Service user is True if user type is SERVICE.
         email_confirmed_at (Union[None, datetime.datetime]):
         conditions_accepted_at (Union[None, datetime.datetime]):
         approved_for_root_at (Union[None, datetime.datetime]):
         institution (InstitutionList):
+        otp_required (Union[None, bool]): OTP is now always required.
+        event (Union[None, str]):
         responsible_users (List['UserList']):
         is_superuser (Union[Unset, bool]): Designates that this user has all permissions without explicitly assigning
             them.
@@ -68,8 +70,6 @@ class User:
         user_reason (Union[Unset, str]): Indicate why the user has been suspended
         internal_reason (Union[Unset, str]): Any internal details about the user's suspension that should not be
             displayed to the user
-        otp_required (Union[Unset, bool]): Indicates if OTP verification is required at all times for this user.
-        event (Union[None, Unset, str]): Training event account has been set up for.
         user_type (Union[Unset, UserTypeEnum]): * `STANDARD` - Standard
             * `SERVICE` - Service User
             * `TRAINING` - Training Account
@@ -90,6 +90,8 @@ class User:
     conditions_accepted_at: Union[None, datetime.datetime]
     approved_for_root_at: Union[None, datetime.datetime]
     institution: "InstitutionList"
+    otp_required: Union[None, bool]
+    event: Union[None, str]
     responsible_users: List["UserList"]
     is_superuser: Union[Unset, bool] = UNSET
     email: Union[Unset, str] = UNSET
@@ -99,8 +101,6 @@ class User:
     internal_comment: Union[Unset, str] = UNSET
     user_reason: Union[Unset, str] = UNSET
     internal_reason: Union[Unset, str] = UNSET
-    otp_required: Union[Unset, bool] = UNSET
-    event: Union[None, Unset, str] = UNSET
     user_type: Union[Unset, UserTypeEnum] = UNSET
     deactivated_at: Union[None, Unset, datetime.datetime] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -149,6 +149,12 @@ class User:
 
         institution = self.institution.to_dict()
 
+        otp_required: Union[None, bool]
+        otp_required = self.otp_required
+
+        event: Union[None, str]
+        event = self.event
+
         responsible_users = []
         for responsible_users_item_data in self.responsible_users:
             responsible_users_item = responsible_users_item_data.to_dict()
@@ -175,14 +181,6 @@ class User:
         user_reason = self.user_reason
 
         internal_reason = self.internal_reason
-
-        otp_required = self.otp_required
-
-        event: Union[None, Unset, str]
-        if isinstance(self.event, Unset):
-            event = UNSET
-        else:
-            event = self.event
 
         user_type: Union[Unset, str] = UNSET
         if not isinstance(self.user_type, Unset):
@@ -213,6 +211,8 @@ class User:
                 "conditions_accepted_at": conditions_accepted_at,
                 "approved_for_root_at": approved_for_root_at,
                 "institution": institution,
+                "otp_required": otp_required,
+                "event": event,
                 "responsible_users": responsible_users,
             }
         )
@@ -232,10 +232,6 @@ class User:
             field_dict["user_reason"] = user_reason
         if internal_reason is not UNSET:
             field_dict["internal_reason"] = internal_reason
-        if otp_required is not UNSET:
-            field_dict["otp_required"] = otp_required
-        if event is not UNSET:
-            field_dict["event"] = event
         if user_type is not UNSET:
             field_dict["user_type"] = user_type
         if deactivated_at is not UNSET:
@@ -333,6 +329,20 @@ class User:
 
         institution = InstitutionList.from_dict(d.pop("institution"))
 
+        def _parse_otp_required(data: object) -> Union[None, bool]:
+            if data is None:
+                return data
+            return cast(Union[None, bool], data)
+
+        otp_required = _parse_otp_required(d.pop("otp_required"))
+
+        def _parse_event(data: object) -> Union[None, str]:
+            if data is None:
+                return data
+            return cast(Union[None, str], data)
+
+        event = _parse_event(d.pop("event"))
+
         responsible_users = []
         _responsible_users = d.pop("responsible_users")
         for responsible_users_item_data in _responsible_users:
@@ -373,17 +383,6 @@ class User:
 
         internal_reason = d.pop("internal_reason", UNSET)
 
-        otp_required = d.pop("otp_required", UNSET)
-
-        def _parse_event(data: object) -> Union[None, Unset, str]:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(Union[None, Unset, str], data)
-
-        event = _parse_event(d.pop("event", UNSET))
-
         _user_type = d.pop("user_type", UNSET)
         user_type: Union[Unset, UserTypeEnum]
         if isinstance(_user_type, Unset):
@@ -422,6 +421,8 @@ class User:
             conditions_accepted_at=conditions_accepted_at,
             approved_for_root_at=approved_for_root_at,
             institution=institution,
+            otp_required=otp_required,
+            event=event,
             responsible_users=responsible_users,
             is_superuser=is_superuser,
             email=email,
@@ -431,8 +432,6 @@ class User:
             internal_comment=internal_comment,
             user_reason=user_reason,
             internal_reason=internal_reason,
-            otp_required=otp_required,
-            event=event,
             user_type=user_type,
             deactivated_at=deactivated_at,
         )

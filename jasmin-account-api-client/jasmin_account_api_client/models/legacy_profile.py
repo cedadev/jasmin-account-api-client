@@ -5,32 +5,31 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ServiceUser")
+T = TypeVar("T", bound="LegacyProfile")
 
 
 @_attrs_define
-class ServiceUser:
-    """Basic UserSerializer to provide a link to the full one.
-
+class LegacyProfile:
+    """
     Attributes:
-        id (int):
-        url (str):
         username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        first_name (str):
+        last_name (str):
         email (Union[Unset, str]):
     """
 
-    id: int
-    url: str
     username: str
+    first_name: str
+    last_name: str
     email: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        id = self.id
-
-        url = self.url
-
         username = self.username
+
+        first_name = self.first_name
+
+        last_name = self.last_name
 
         email = self.email
 
@@ -38,9 +37,9 @@ class ServiceUser:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "id": id,
-                "url": url,
                 "username": username,
+                "first_name": first_name,
+                "last_name": last_name,
             }
         )
         if email is not UNSET:
@@ -51,23 +50,23 @@ class ServiceUser:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        id = d.pop("id")
-
-        url = d.pop("url")
-
         username = d.pop("username")
+
+        first_name = d.pop("first_name")
+
+        last_name = d.pop("last_name")
 
         email = d.pop("email", UNSET)
 
-        service_user = cls(
-            id=id,
-            url=url,
+        legacy_profile = cls(
             username=username,
+            first_name=first_name,
+            last_name=last_name,
             email=email,
         )
 
-        service_user.additional_properties = d
-        return service_user
+        legacy_profile.additional_properties = d
+        return legacy_profile
 
     @property
     def additional_keys(self) -> List[str]:

@@ -1,4 +1,3 @@
-import datetime
 from http import HTTPStatus
 from typing import Any, Dict, List, Optional, Union
 
@@ -6,31 +5,21 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.role import Role
+from ...models.service_list import ServiceList
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
-    service_id: int,
+    category_name: str,
     *,
-    name: Union[Unset, List[str]] = UNSET,
-    on_date: Union[Unset, datetime.date] = UNSET,
+    name: Union[Unset, str] = UNSET,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
 ) -> Dict[str, Any]:
 
     params: Dict[str, Any] = {}
 
-    json_name: Union[Unset, List[str]] = UNSET
-    if not isinstance(name, Unset):
-        json_name = name
-
-    params["name"] = json_name
-
-    json_on_date: Union[Unset, str] = UNSET
-    if not isinstance(on_date, Unset):
-        json_on_date = on_date.isoformat()
-    params["on_date"] = json_on_date
+    params["name"] = name
 
     params["ordering"] = ordering
 
@@ -40,8 +29,8 @@ def _get_kwargs(
 
     _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": "/api/v1/services/{service_id}/roles/".format(
-            service_id=service_id,
+        "url": "/api/v1/categories/{category_name}/services/".format(
+            category_name=category_name,
         ),
         "params": params,
     }
@@ -49,12 +38,14 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[List["Role"]]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[List["ServiceList"]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = Role.from_dict(response_200_item_data)
+            response_200_item = ServiceList.from_dict(response_200_item_data)
 
             response_200.append(response_200_item)
 
@@ -65,7 +56,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[List["Role"]]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[List["ServiceList"]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -75,20 +68,21 @@ def _build_response(*, client: Union[AuthenticatedClient, Client], response: htt
 
 
 def sync_detailed(
-    service_id: int,
+    category_name: str,
     *,
     client: AuthenticatedClient,
-    name: Union[Unset, List[str]] = UNSET,
-    on_date: Union[Unset, datetime.date] = UNSET,
+    name: Union[Unset, str] = UNSET,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
-) -> Response[List["Role"]]:
-    """View roles for a service.
+) -> Response[List["ServiceList"]]:
+    """Viewset to allow services to be nested under categories.
+
+    Same as ServicesViewset, but lookup the service by name instead of pk,
+    and filter by category.
 
     Args:
-        service_id (int):
-        name (Union[Unset, List[str]]):
-        on_date (Union[Unset, datetime.date]):
+        category_name (str):
+        name (Union[Unset, str]):
         ordering (Union[Unset, str]):
         search (Union[Unset, str]):
 
@@ -97,13 +91,12 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[List['Role']]
+        Response[List['ServiceList']]
     """
 
     kwargs = _get_kwargs(
-        service_id=service_id,
+        category_name=category_name,
         name=name,
-        on_date=on_date,
         ordering=ordering,
         search=search,
     )
@@ -116,20 +109,21 @@ def sync_detailed(
 
 
 def sync(
-    service_id: int,
+    category_name: str,
     *,
     client: AuthenticatedClient,
-    name: Union[Unset, List[str]] = UNSET,
-    on_date: Union[Unset, datetime.date] = UNSET,
+    name: Union[Unset, str] = UNSET,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
-) -> Optional[List["Role"]]:
-    """View roles for a service.
+) -> Optional[List["ServiceList"]]:
+    """Viewset to allow services to be nested under categories.
+
+    Same as ServicesViewset, but lookup the service by name instead of pk,
+    and filter by category.
 
     Args:
-        service_id (int):
-        name (Union[Unset, List[str]]):
-        on_date (Union[Unset, datetime.date]):
+        category_name (str):
+        name (Union[Unset, str]):
         ordering (Union[Unset, str]):
         search (Union[Unset, str]):
 
@@ -138,34 +132,34 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        List['Role']
+        List['ServiceList']
     """
 
     return sync_detailed(
-        service_id=service_id,
+        category_name=category_name,
         client=client,
         name=name,
-        on_date=on_date,
         ordering=ordering,
         search=search,
     ).parsed
 
 
 async def asyncio_detailed(
-    service_id: int,
+    category_name: str,
     *,
     client: AuthenticatedClient,
-    name: Union[Unset, List[str]] = UNSET,
-    on_date: Union[Unset, datetime.date] = UNSET,
+    name: Union[Unset, str] = UNSET,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
-) -> Response[List["Role"]]:
-    """View roles for a service.
+) -> Response[List["ServiceList"]]:
+    """Viewset to allow services to be nested under categories.
+
+    Same as ServicesViewset, but lookup the service by name instead of pk,
+    and filter by category.
 
     Args:
-        service_id (int):
-        name (Union[Unset, List[str]]):
-        on_date (Union[Unset, datetime.date]):
+        category_name (str):
+        name (Union[Unset, str]):
         ordering (Union[Unset, str]):
         search (Union[Unset, str]):
 
@@ -174,13 +168,12 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[List['Role']]
+        Response[List['ServiceList']]
     """
 
     kwargs = _get_kwargs(
-        service_id=service_id,
+        category_name=category_name,
         name=name,
-        on_date=on_date,
         ordering=ordering,
         search=search,
     )
@@ -191,20 +184,21 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    service_id: int,
+    category_name: str,
     *,
     client: AuthenticatedClient,
-    name: Union[Unset, List[str]] = UNSET,
-    on_date: Union[Unset, datetime.date] = UNSET,
+    name: Union[Unset, str] = UNSET,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
-) -> Optional[List["Role"]]:
-    """View roles for a service.
+) -> Optional[List["ServiceList"]]:
+    """Viewset to allow services to be nested under categories.
+
+    Same as ServicesViewset, but lookup the service by name instead of pk,
+    and filter by category.
 
     Args:
-        service_id (int):
-        name (Union[Unset, List[str]]):
-        on_date (Union[Unset, datetime.date]):
+        category_name (str):
+        name (Union[Unset, str]):
         ordering (Union[Unset, str]):
         search (Union[Unset, str]):
 
@@ -213,15 +207,14 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        List['Role']
+        List['ServiceList']
     """
 
     return (
         await asyncio_detailed(
-            service_id=service_id,
+            category_name=category_name,
             client=client,
             name=name,
-            on_date=on_date,
             ordering=ordering,
             search=search,
         )

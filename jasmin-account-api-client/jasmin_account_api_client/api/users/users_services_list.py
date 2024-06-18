@@ -10,7 +10,7 @@ from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
-    username: str,
+    user_username: str,
     *,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
@@ -26,8 +26,8 @@ def _get_kwargs(
 
     _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": "/api/v1/users/{username}/services/".format(
-            username=username,
+        "url": "/api/v1/users/{user_username}/services/".format(
+            user_username=user_username,
         ),
         "params": params,
     }
@@ -65,16 +65,16 @@ def _build_response(
 
 
 def sync_detailed(
-    username: str,
+    user_username: str,
     *,
     client: AuthenticatedClient,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
 ) -> Response[List["ServiceList"]]:
-    """List the services of a given user.
+    """Get the services assocated with a user.
 
     Args:
-        username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        user_username (str):
         ordering (Union[Unset, str]):
         search (Union[Unset, str]):
 
@@ -87,7 +87,7 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        username=username,
+        user_username=user_username,
         ordering=ordering,
         search=search,
     )
@@ -100,16 +100,16 @@ def sync_detailed(
 
 
 def sync(
-    username: str,
+    user_username: str,
     *,
     client: AuthenticatedClient,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
 ) -> Optional[List["ServiceList"]]:
-    """List the services of a given user.
+    """Get the services assocated with a user.
 
     Args:
-        username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        user_username (str):
         ordering (Union[Unset, str]):
         search (Union[Unset, str]):
 
@@ -122,7 +122,7 @@ def sync(
     """
 
     return sync_detailed(
-        username=username,
+        user_username=user_username,
         client=client,
         ordering=ordering,
         search=search,
@@ -130,16 +130,16 @@ def sync(
 
 
 async def asyncio_detailed(
-    username: str,
+    user_username: str,
     *,
     client: AuthenticatedClient,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
 ) -> Response[List["ServiceList"]]:
-    """List the services of a given user.
+    """Get the services assocated with a user.
 
     Args:
-        username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        user_username (str):
         ordering (Union[Unset, str]):
         search (Union[Unset, str]):
 
@@ -152,7 +152,7 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        username=username,
+        user_username=user_username,
         ordering=ordering,
         search=search,
     )
@@ -163,16 +163,16 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    username: str,
+    user_username: str,
     *,
     client: AuthenticatedClient,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
 ) -> Optional[List["ServiceList"]]:
-    """List the services of a given user.
+    """Get the services assocated with a user.
 
     Args:
-        username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        user_username (str):
         ordering (Union[Unset, str]):
         search (Union[Unset, str]):
 
@@ -186,7 +186,7 @@ async def asyncio(
 
     return (
         await asyncio_detailed(
-            username=username,
+            user_username=user_username,
             client=client,
             ordering=ordering,
             search=search,

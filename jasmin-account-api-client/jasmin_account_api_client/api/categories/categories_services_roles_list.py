@@ -11,7 +11,8 @@ from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
-    service_id: int,
+    category_name: str,
+    service_name: str,
     *,
     name: Union[Unset, List[str]] = UNSET,
     on_date: Union[Unset, datetime.date] = UNSET,
@@ -40,8 +41,9 @@ def _get_kwargs(
 
     _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": "/api/v1/services/{service_id}/roles/".format(
-            service_id=service_id,
+        "url": "/api/v1/categories/{category_name}/services/{service_name}/roles/".format(
+            category_name=category_name,
+            service_name=service_name,
         ),
         "params": params,
     }
@@ -75,7 +77,8 @@ def _build_response(*, client: Union[AuthenticatedClient, Client], response: htt
 
 
 def sync_detailed(
-    service_id: int,
+    category_name: str,
+    service_name: str,
     *,
     client: AuthenticatedClient,
     name: Union[Unset, List[str]] = UNSET,
@@ -86,7 +89,8 @@ def sync_detailed(
     """View roles for a service.
 
     Args:
-        service_id (int):
+        category_name (str):
+        service_name (str):
         name (Union[Unset, List[str]]):
         on_date (Union[Unset, datetime.date]):
         ordering (Union[Unset, str]):
@@ -101,7 +105,8 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        service_id=service_id,
+        category_name=category_name,
+        service_name=service_name,
         name=name,
         on_date=on_date,
         ordering=ordering,
@@ -116,7 +121,8 @@ def sync_detailed(
 
 
 def sync(
-    service_id: int,
+    category_name: str,
+    service_name: str,
     *,
     client: AuthenticatedClient,
     name: Union[Unset, List[str]] = UNSET,
@@ -127,7 +133,8 @@ def sync(
     """View roles for a service.
 
     Args:
-        service_id (int):
+        category_name (str):
+        service_name (str):
         name (Union[Unset, List[str]]):
         on_date (Union[Unset, datetime.date]):
         ordering (Union[Unset, str]):
@@ -142,7 +149,8 @@ def sync(
     """
 
     return sync_detailed(
-        service_id=service_id,
+        category_name=category_name,
+        service_name=service_name,
         client=client,
         name=name,
         on_date=on_date,
@@ -152,7 +160,8 @@ def sync(
 
 
 async def asyncio_detailed(
-    service_id: int,
+    category_name: str,
+    service_name: str,
     *,
     client: AuthenticatedClient,
     name: Union[Unset, List[str]] = UNSET,
@@ -163,7 +172,8 @@ async def asyncio_detailed(
     """View roles for a service.
 
     Args:
-        service_id (int):
+        category_name (str):
+        service_name (str):
         name (Union[Unset, List[str]]):
         on_date (Union[Unset, datetime.date]):
         ordering (Union[Unset, str]):
@@ -178,7 +188,8 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        service_id=service_id,
+        category_name=category_name,
+        service_name=service_name,
         name=name,
         on_date=on_date,
         ordering=ordering,
@@ -191,7 +202,8 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    service_id: int,
+    category_name: str,
+    service_name: str,
     *,
     client: AuthenticatedClient,
     name: Union[Unset, List[str]] = UNSET,
@@ -202,7 +214,8 @@ async def asyncio(
     """View roles for a service.
 
     Args:
-        service_id (int):
+        category_name (str):
+        service_name (str):
         name (Union[Unset, List[str]]):
         on_date (Union[Unset, datetime.date]):
         ordering (Union[Unset, str]):
@@ -218,7 +231,8 @@ async def asyncio(
 
     return (
         await asyncio_detailed(
-            service_id=service_id,
+            category_name=category_name,
+            service_name=service_name,
             client=client,
             name=name,
             on_date=on_date,

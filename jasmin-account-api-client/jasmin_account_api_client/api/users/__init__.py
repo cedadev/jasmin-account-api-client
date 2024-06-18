@@ -1,6 +1,6 @@
 import warnings
 
-from . import users_list, users_retrieve, users_services_list
+from . import users_grants_list, users_list, users_retrieve, users_services_list
 
 
 def __getattr__(name):
@@ -12,6 +12,7 @@ def __getattr__(name):
 
 __all__ = [
     "users_list",
-    "users_retrieve",
+    "users_grants_list",
     "users_services_list",
+    "users_retrieve",
 ]

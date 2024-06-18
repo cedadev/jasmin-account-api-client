@@ -4,6 +4,52 @@ info:
   version: 1.0.0
   description: Account and service data for the jasmin-account portal.
 paths:
+  /api/email/:
+    get:
+      operationId: api_email_retrieve
+      description: |-
+        This view provides the legacy /email/ api view.
+
+        It lists users who need to reconfirm their email addresses.
+      tags:
+        - api
+      deprecated: true
+      responses:
+        "200":
+          description: No response body
+  /api/profile/:
+    get:
+      operationId: api_profile_list
+      description: |-
+        This view provides the legacy /profile/ api view.
+
+        OAuth protected endpoint that returns basic profile information about the
+        logged in user.
+      tags:
+        - api
+      deprecated: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LegacyProfile"
+          description: ""
+  /api/services/:
+    get:
+      operationId: api_services_retrieve
+      description: |-
+        This view provides the legacy /services/ api view.
+
+        OAuth protected endpoint that returns basic information about the services
+        and roles for which the user has and active grant that is not revoked or
+        expired.
+      tags:
+        - api
+      deprecated: true
+      responses:
+        "200":
+          description: No response body
   /api/v1/categories/:
     get:
       operationId: categories_list
@@ -38,6 +84,173 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/CategoryList"
+          description: ""
+  /api/v1/categories/{category_name}/services/:
+    get:
+      operationId: categories_services_list
+      description: |-
+        Viewset to allow services to be nested under categories.
+
+        Same as ServicesViewset, but lookup the service by name instead of pk,
+        and filter by category.
+      parameters:
+        - in: path
+          name: category_name
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: name
+          schema:
+            type: string
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+      tags:
+        - categories
+      security:
+        - oauth2:
+            - jasmin.services.services.all:read
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ServiceList"
+          description: ""
+  /api/v1/categories/{category_name}/services/{name}/:
+    get:
+      operationId: categories_services_retrieve
+      description: |-
+        Viewset to allow services to be nested under categories.
+
+        Same as ServicesViewset, but lookup the service by name instead of pk,
+        and filter by category.
+      parameters:
+        - in: path
+          name: category_name
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: name
+          schema:
+            type: string
+            description: The name of the service. This is also used in URLs.
+          required: true
+      tags:
+        - categories
+      security:
+        - oauth2:
+            - jasmin.services.services.all:read
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+          description: ""
+  /api/v1/categories/{category_name}/services/{service_name}/roles/:
+    get:
+      operationId: categories_services_roles_list
+      description: View roles for a service.
+      parameters:
+        - in: path
+          name: category_name
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: name
+          schema:
+            type: array
+            items:
+              type: string
+              title: Role name
+          explode: true
+          style: form
+        - in: query
+          name: on_date
+          schema:
+            type: string
+            format: date
+          description:
+            ISO Date on which you would like to know the active roles for
+            a service.
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+        - in: path
+          name: service_name
+          schema:
+            type: string
+          required: true
+      tags:
+        - categories
+      security:
+        - oauth2:
+            - jasmin.services.serviceroles.all:read
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Role"
+          description: ""
+  /api/v1/categories/{category_name}/services/{service_name}/roles/{name}/:
+    get:
+      operationId: categories_services_roles_retrieve
+      description: View roles for a service.
+      parameters:
+        - in: path
+          name: category_name
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: name
+          schema:
+            type: string
+            title: Role name
+          required: true
+        - in: path
+          name: service_name
+          schema:
+            type: string
+          required: true
+      tags:
+        - categories
+      security:
+        - oauth2:
+            - jasmin.services.serviceroles.all:read
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Role"
           description: ""
   /api/v1/categories/{name}/:
     get:
@@ -128,29 +341,20 @@ paths:
               schema:
                 $ref: "#/components/schemas/Service"
           description: ""
-  /api/v1/services/{id}/roles/:
+  /api/v1/services/{service_id}/roles/:
     get:
       operationId: services_roles_list
-      description: List roles in a services and their holders.
+      description: View roles for a service.
       parameters:
         - in: query
-          name: category
+          name: name
           schema:
-            type: integer
-        - in: query
-          name: ceda_managed
-          schema:
-            type: boolean
-        - in: query
-          name: hidden
-          schema:
-            type: boolean
-        - in: path
-          name: id
-          schema:
-            type: integer
-          description: A unique integer value identifying this service.
-          required: true
+            type: array
+            items:
+              type: string
+              title: Role name
+          explode: true
+          style: form
         - in: query
           name: on_date
           schema:
@@ -171,6 +375,11 @@ paths:
           description: A search term.
           schema:
             type: string
+        - in: path
+          name: service_id
+          schema:
+            type: integer
+          required: true
       tags:
         - services
       security:
@@ -184,6 +393,34 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Role"
+          description: ""
+  /api/v1/services/{service_id}/roles/{name}/:
+    get:
+      operationId: services_roles_retrieve
+      description: View roles for a service.
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+            title: Role name
+          required: true
+        - in: path
+          name: service_id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - services
+      security:
+        - oauth2:
+            - jasmin.services.serviceroles.all:read
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Role"
           description: ""
   /api/v1/users/:
     get:
@@ -245,6 +482,93 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserList"
           description: ""
+  /api/v1/users/{user_username}/grants/:
+    get:
+      operationId: users_grants_list
+      description: Get the grants associated with a user.
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+          description: Name of the category you would like to filter the grants for.
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+        - in: query
+          name: role
+          schema:
+            type: string
+          description: Name of the role you would like to filter the grants for.
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+        - in: query
+          name: service
+          schema:
+            type: string
+          description: Name of the service you would like to filter the grants for.
+        - in: path
+          name: user_username
+          schema:
+            type: string
+          required: true
+      tags:
+        - users
+      security:
+        - oauth2:
+            - jasmin.services.userservices.all:read
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserGrant"
+          description: ""
+  /api/v1/users/{user_username}/services/:
+    get:
+      operationId: users_services_list
+      description: Get the services assocated with a user.
+      parameters:
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+        - in: path
+          name: user_username
+          schema:
+            type: string
+          required: true
+      tags:
+        - users
+      security:
+        - oauth2:
+            - jasmin.services.userservices.all:read
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ServiceList"
+          description: ""
   /api/v1/users/{username}/:
     get:
       operationId: users_retrieve
@@ -269,45 +593,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
-          description: ""
-  /api/v1/users/{username}/services/:
-    get:
-      operationId: users_services_list
-      description: List the services of a given user.
-      parameters:
-        - name: ordering
-          required: false
-          in: query
-          description: Which field to use when ordering the results.
-          schema:
-            type: string
-        - name: search
-          required: false
-          in: query
-          description: A search term.
-          schema:
-            type: string
-        - in: path
-          name: username
-          schema:
-            type: string
-            description:
-              Required. 150 characters or fewer. Letters, digits and @/./+/-/_
-              only.
-          required: true
-      tags:
-        - users
-      security:
-        - oauth2:
-            - jasmin.services.userservices.all:read
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ServiceList"
           description: ""
 components:
   schemas:
@@ -891,7 +1176,7 @@ components:
         * `MU` - Mauritius
         * `YT` - Mayotte
         * `MX` - Mexico
-        * `FM` - Micronesia (Federated States of)
+        * `FM` - Micronesia
         * `MD` - Moldova
         * `MC` - Monaco
         * `MN` - Mongolia
@@ -1009,6 +1294,31 @@ components:
       required:
         - id
         - name
+    LegacyProfile:
+      type: object
+      properties:
+        username:
+          type: string
+          description:
+            Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+      required:
+        - first_name
+        - last_name
+        - username
     Role:
       type: object
       description: Detail of role with holders.
@@ -1230,7 +1540,7 @@ components:
               * `MU` - Mauritius
               * `YT` - Mayotte
               * `MX` - Mexico
-              * `FM` - Micronesia (Federated States of)
+              * `FM` - Micronesia
               * `MD` - Moldova
               * `MC` - Monaco
               * `MN` - Mongolia
@@ -1418,6 +1728,11 @@ components:
             only.
           pattern: ^[\w.@+-]+$
           maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
       required:
         - id
         - url
@@ -1510,6 +1825,7 @@ components:
             the user
         service_user:
           type: boolean
+          description: Service user is True if user type is SERVICE.
           readOnly: true
           nullable: true
         email_confirmed_at:
@@ -1538,15 +1854,13 @@ components:
           $ref: "#/components/schemas/InstitutionList"
         otp_required:
           type: boolean
-          title: OTP required?
-          description:
-            Indicates if OTP verification is required at all times for
-            this user.
+          description: OTP is now always required.
+          readOnly: true
+          nullable: true
         event:
           type: string
-          format: uri
+          readOnly: true
           nullable: true
-          description: Training event account has been set up for.
         responsible_users:
           type: array
           items:
@@ -1573,14 +1887,58 @@ components:
         - date_joined
         - discipline
         - email_confirmed_at
+        - event
         - first_name
         - id
         - institution
         - last_login
         - last_name
+        - otp_required
         - responsible_users
         - service_user
         - username
+    UserGrant:
+      type: object
+      description: Simple details about a service.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        service:
+          allOf:
+            - $ref: "#/components/schemas/ServiceList"
+          readOnly: true
+        role:
+          allOf:
+            - $ref: "#/components/schemas/RoleList"
+          readOnly: true
+        granted_at:
+          type: string
+          format: date-time
+          readOnly: true
+        expires:
+          type: string
+          format: date
+          title: Expiry date
+        revoked:
+          type: boolean
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date on which this grant was revoked.
+        user_reason:
+          type: string
+          title: Reason for revocation (user)
+          description:
+            '<a href="http://daringfireball.net/projects/markdown/syntax"
+            target="_blank">Markdown syntax</a> allowed, but no raw HTML. Examples:
+            **bold**, *italic*, indent 4 spaces for a code block.'
+      required:
+        - granted_at
+        - id
+        - role
+        - service
     UserList:
       type: object
       properties:
@@ -1608,6 +1966,7 @@ components:
           $ref: "#/components/schemas/InstitutionList"
         service_user:
           type: boolean
+          description: Service user is True if user type is SERVICE.
           readOnly: true
           nullable: true
         is_active:
@@ -1656,19 +2015,17 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: https://accounts.jasmin.ac.uk/oauth/token/
+          tokenUrl: /oauth/token/
           scopes:
-            jasmin.services.serviceroles.all:read:
-              View all the roleholders for any
-              service.
-            jasmin.services.categories.all:read:
-              View basic information about all
-              service categories.
-            jasmin.auth.users.all:read: View all user information about all users.
+            jasmin.projects.all:read: Read everything from the projects portal.
             https://slcs.jasmin.ac.uk/certificate.test:
               Obtain short-lived user certificate
               (test)
-            https://slcs.jasmin.ac.uk/certificate/: Obtain short-lived user certificate
+            email: Access your email address.
+            jasmin.auth.accountmeta: Metadata about the user's JASMIN account.
+            profile: Access your name and profile information using OpenID Connect.
+            jasmin.projects.services.all:read: List all services in the projects portal.
+            openid: Authenticate using OpenID Connect.
             https://accounts.jasmin.ac.uk/oauth/introspect/: Introspect OAuth tokens
             https://accounts.jasmin.ac.uk/oauth/register_scope/:
               Register additional
@@ -1684,3 +2041,11 @@ components:
             jasmin.services.userservices.all:read:
               View all the services any user
               is part of.
+            jasmin.services.serviceroles.all:read:
+              View all the roleholders for any
+              service.
+            jasmin.services.categories.all:read:
+              View basic information about all
+              service categories.
+            jasmin.auth.users.all:read: View all user information about all users.
+            https://slcs.jasmin.ac.uk/certificate/: Obtain short-lived user certificate

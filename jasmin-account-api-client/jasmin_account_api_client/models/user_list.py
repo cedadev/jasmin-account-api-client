@@ -23,7 +23,7 @@ class UserList:
         first_name (str):
         last_name (str):
         institution (InstitutionList):
-        service_user (Union[None, bool]):
+        service_user (Union[None, bool]): Service user is True if user type is SERVICE.
         is_active (Union[Unset, bool]): Designates whether this user should be treated as active. Unselect this instead
             of deleting accounts.
         email (Union[Unset, str]):

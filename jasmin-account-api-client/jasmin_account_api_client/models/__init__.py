@@ -10,12 +10,14 @@ from .degree_enum import DegreeEnum
 from .discipline_enum import DisciplineEnum
 from .institution_countries_enum import InstitutionCountriesEnum
 from .institution_list import InstitutionList
+from .legacy_profile import LegacyProfile
 from .role import Role
 from .role_list import RoleList
 from .service import Service
 from .service_list import ServiceList
 from .service_user import ServiceUser
 from .user import User
+from .user_grant import UserGrant
 from .user_list import UserList
 from .user_type_enum import UserTypeEnum
 from .users_list_user_type import UsersListUserType
@@ -31,12 +33,14 @@ __all__ = (
     "DisciplineEnum",
     "InstitutionCountriesEnum",
     "InstitutionList",
+    "LegacyProfile",
     "Role",
     "RoleList",
     "Service",
     "ServiceList",
     "ServiceUser",
     "User",
+    "UserGrant",
     "UserList",
     "UsersListUserType",
     "UserTypeEnum",
