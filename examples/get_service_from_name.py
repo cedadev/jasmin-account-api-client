@@ -11,11 +11,12 @@ client.client_credentials_flow(
     client_secret=os.environ["JASMIN_CLIENT_SECRET"],
     scopes=[
         "jasmin.services.categories.all:read",  # categories_retrieve and categories_list
+        "jasmin.services.services.all:read",  # categories_services_retrieve
     ],
 )
 
 # Get a single category by name.
-single_category = jcats.categories_retrieve.sync("login_services", client=client)
-if single_category:
-    single_service = [x for x in single_category.services if x.name == "jasmin-login"][0]
-    print(single_service)
+single_service = jcats.categories_services_retrieve.sync(
+    category_name="login_services", name="jasmin-login", client=client
+)
+print(single_service)

@@ -4,10 +4,12 @@ import json
 import os
 
 import jasmin_account_api_client as jclient
+import jasmin_account_api_client.api.categories as jcats
 import jasmin_account_api_client.api.services as jservices
 import jasmin_account_api_client.api.users as jusers
 
-SERVICE_ID = 92
+CATEGORY_NAME = "group_workspaces"
+SERVICE_NAME = "name"
 
 client = jclient.AuthenticatedClient("https://accounts.jasmin.ac.uk")
 client.client_credentials_flow(
@@ -20,17 +22,14 @@ client.client_credentials_flow(
 )
 
 # Get all the roles which are active in a service.
-service_roles = jservices.services_roles_list.sync(SERVICE_ID, client=client)
+service_roles = jcats.categories_services_roles_list.sync(
+    category_name=CATEGORY_NAME, service_name=SERVICE_NAME, client=client
+)
 
 # Get their usernames.
 accesses = []
 for role in service_roles:
     accesses += role.accesses
-usernames = [x.user.username for x in accesses]
-
-# Get all the users
-all_users = jusers.users_list.sync(client=client)
-# Filter by service.
-emails = {x.email for x in all_users if (x.username in usernames) and x.email}
+emails = [x.user.email for x in accesses]
 
 print(json.dumps(list(emails), indent=2, sort_keys=True))

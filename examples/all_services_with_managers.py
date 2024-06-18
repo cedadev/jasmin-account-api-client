@@ -35,7 +35,7 @@ async def main():
     async def get_service_roles(service_id):
         try:
             service_roles[service_id] = await jservices.services_roles_list.asyncio(
-                service_id, client=client
+                service_id, client=client, name=["DEPUTY", "MANAGER"]
             )
             failed.remove(service_id)
         except (httpx.ConnectError, httpx.ConnectTimeout):
@@ -60,7 +60,6 @@ async def main():
                 ]
             }
             for x in service_roles[service.id]
-            if x.name in ["MANAGER", "DEPUTY"]
         ]
         result.append(
             {
@@ -71,8 +70,7 @@ async def main():
             }
         )
 
-    with open("all_accounts_portal_services.json", "w") as f:
-        json.dump(result, f, indent=2)
+    print(json.dumps(result, indent=2))
 
 
 if __name__ == "__main__":

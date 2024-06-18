@@ -1,12 +1,12 @@
 """Quick demonstration of jasmin_accounts api."""
 
 import asyncio
+import json
 import os
 
 import httpx
 import jasmin_account_api_client as jclient
 import jasmin_account_api_client.api.users as jusers
-import yaml
 
 
 async def main():
@@ -64,8 +64,7 @@ async def main():
             await asyncio.sleep(0.5)
 
     # All done? Write the results to yaml.
-    with open("result.yaml", "w", encoding="utf-8") as f:
-        yaml.dump(results, f)
+    print(json.dumps(results, indent=2))
 
 
 if __name__ == "__main__":
