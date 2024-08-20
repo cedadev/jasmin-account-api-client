@@ -24,7 +24,7 @@ inst = pd.json_normalize(inst["fields"]).set_index(inst["pk"])
 # Make the api result into a dict for pandas, and unwrap the institution_id.
 active_users = (
     x.to_dict() | {"institution_id": x.institution.id}
-    for x in jusers.users_list.sync(client=client, is_active=False)
+    for x in jusers.users_list.sync(client=client, is_active=True)
 )
 
 users = pd.DataFrame.from_dict(active_users)

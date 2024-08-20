@@ -15,6 +15,6 @@ client.client_credentials_flow(
     ],
 )
 
-active_users = jusers.users_list.sync(client=client, is_active=False)
+active_users = jusers.users_list.sync(client=client, is_active=True)
 
 print(len(active_users))
