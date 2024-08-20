@@ -5,7 +5,7 @@ import os
 import jasmin_account_api_client as jclient
 import jasmin_account_api_client.api.services as jservices
 
-SERVICE_ID = 182
+SERVICE_ID = 148
 ROLE_NAME = "USER"
 
 client = jclient.AuthenticatedClient("https://accounts.jasmin.ac.uk")
@@ -24,3 +24,4 @@ if service_roles:
     # Transform list of accesses to retrieve username only.
     usernames = [x.user.username for x in service_roles[0].accesses]
     print(usernames)
+    print(len(usernames))
