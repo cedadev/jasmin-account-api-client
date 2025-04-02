@@ -22,6 +22,6 @@ service_roles = jservices.services_roles_list.sync(
 # If there are no roles service_roles will be None.
 if service_roles:
     # Transform list of accesses to retrieve username only.
-    usernames = [x.user.username for x in service_roles[0].accesses]
+    usernames = [x.user.username for x in service_roles[0].accesses if x.user.type == "STANDARD"]
     print(usernames)
     print(len(usernames))
