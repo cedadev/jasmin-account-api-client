@@ -6,6 +6,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.user_list import UserList
+from ...models.users_list_lifecycle_state import UsersListLifecycleState
 from ...models.users_list_user_type import UsersListUserType
 from ...types import UNSET, Response, Unset
 
@@ -14,6 +15,7 @@ def _get_kwargs(
     *,
     institution: Union[Unset, int] = UNSET,
     is_active: Union[Unset, bool] = UNSET,
+    lifecycle_state: Union[Unset, UsersListLifecycleState] = UNSET,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
     service_user: Union[Unset, bool] = UNSET,
@@ -25,6 +27,12 @@ def _get_kwargs(
     params["institution"] = institution
 
     params["is_active"] = is_active
+
+    json_lifecycle_state: Union[Unset, str] = UNSET
+    if not isinstance(lifecycle_state, Unset):
+        json_lifecycle_state = lifecycle_state.value
+
+    params["lifecycle_state"] = json_lifecycle_state
 
     params["ordering"] = ordering
 
@@ -83,6 +91,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     institution: Union[Unset, int] = UNSET,
     is_active: Union[Unset, bool] = UNSET,
+    lifecycle_state: Union[Unset, UsersListLifecycleState] = UNSET,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
     service_user: Union[Unset, bool] = UNSET,
@@ -93,6 +102,7 @@ def sync_detailed(
     Args:
         institution (Union[Unset, int]):
         is_active (Union[Unset, bool]):
+        lifecycle_state (Union[Unset, UsersListLifecycleState]):
         ordering (Union[Unset, str]):
         search (Union[Unset, str]):
         service_user (Union[Unset, bool]):
@@ -109,6 +119,7 @@ def sync_detailed(
     kwargs = _get_kwargs(
         institution=institution,
         is_active=is_active,
+        lifecycle_state=lifecycle_state,
         ordering=ordering,
         search=search,
         service_user=service_user,
@@ -127,6 +138,7 @@ def sync(
     client: AuthenticatedClient,
     institution: Union[Unset, int] = UNSET,
     is_active: Union[Unset, bool] = UNSET,
+    lifecycle_state: Union[Unset, UsersListLifecycleState] = UNSET,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
     service_user: Union[Unset, bool] = UNSET,
@@ -137,6 +149,7 @@ def sync(
     Args:
         institution (Union[Unset, int]):
         is_active (Union[Unset, bool]):
+        lifecycle_state (Union[Unset, UsersListLifecycleState]):
         ordering (Union[Unset, str]):
         search (Union[Unset, str]):
         service_user (Union[Unset, bool]):
@@ -154,6 +167,7 @@ def sync(
         client=client,
         institution=institution,
         is_active=is_active,
+        lifecycle_state=lifecycle_state,
         ordering=ordering,
         search=search,
         service_user=service_user,
@@ -166,6 +180,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     institution: Union[Unset, int] = UNSET,
     is_active: Union[Unset, bool] = UNSET,
+    lifecycle_state: Union[Unset, UsersListLifecycleState] = UNSET,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
     service_user: Union[Unset, bool] = UNSET,
@@ -176,6 +191,7 @@ async def asyncio_detailed(
     Args:
         institution (Union[Unset, int]):
         is_active (Union[Unset, bool]):
+        lifecycle_state (Union[Unset, UsersListLifecycleState]):
         ordering (Union[Unset, str]):
         search (Union[Unset, str]):
         service_user (Union[Unset, bool]):
@@ -192,6 +208,7 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         institution=institution,
         is_active=is_active,
+        lifecycle_state=lifecycle_state,
         ordering=ordering,
         search=search,
         service_user=service_user,
@@ -208,6 +225,7 @@ async def asyncio(
     client: AuthenticatedClient,
     institution: Union[Unset, int] = UNSET,
     is_active: Union[Unset, bool] = UNSET,
+    lifecycle_state: Union[Unset, UsersListLifecycleState] = UNSET,
     ordering: Union[Unset, str] = UNSET,
     search: Union[Unset, str] = UNSET,
     service_user: Union[Unset, bool] = UNSET,
@@ -218,6 +236,7 @@ async def asyncio(
     Args:
         institution (Union[Unset, int]):
         is_active (Union[Unset, bool]):
+        lifecycle_state (Union[Unset, UsersListLifecycleState]):
         ordering (Union[Unset, str]):
         search (Union[Unset, str]):
         service_user (Union[Unset, bool]):
@@ -236,6 +255,7 @@ async def asyncio(
             client=client,
             institution=institution,
             is_active=is_active,
+            lifecycle_state=lifecycle_state,
             ordering=ordering,
             search=search,
             service_user=service_user,

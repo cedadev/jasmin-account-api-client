@@ -3,8 +3,8 @@ from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.lifecycle_state_enum import LifecycleStateEnum
 from ..models.user_type_enum import UserTypeEnum
-from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.institution_list import InstitutionList
@@ -22,15 +22,18 @@ class UserList:
         username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
         first_name (str):
         last_name (str):
-        institution (InstitutionList):
+        institution (Union['InstitutionList', None]):
         service_user (Union[None, bool]): Service user is True if user type is SERVICE.
-        is_active (Union[Unset, bool]): Designates whether this user should be treated as active. Unselect this instead
-            of deleting accounts.
-        email (Union[Unset, str]):
-        user_type (Union[Unset, UserTypeEnum]): * `STANDARD` - Standard
+        is_active (bool): Designates whether this user should be treated as active. Unselect this instead of deleting
+            accounts.
+        email (str):
+        user_type (UserTypeEnum): * `STANDARD` - Standard
             * `SERVICE` - Service User
             * `TRAINING` - Training Account
             * `SHARED` - Shared User
+        lifecycle_state (LifecycleStateEnum): * `NORMAL` - Normal
+            * `AWAITING_CLEANUP` - Awaiting Cleanup
+            * `DORMANT` - Dormant
     """
 
     id: int
@@ -38,14 +41,17 @@ class UserList:
     username: str
     first_name: str
     last_name: str
-    institution: "InstitutionList"
+    institution: Union["InstitutionList", None]
     service_user: Union[None, bool]
-    is_active: Union[Unset, bool] = UNSET
-    email: Union[Unset, str] = UNSET
-    user_type: Union[Unset, UserTypeEnum] = UNSET
+    is_active: bool
+    email: str
+    user_type: UserTypeEnum
+    lifecycle_state: LifecycleStateEnum
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        from ..models.institution_list import InstitutionList
+
         id = self.id
 
         url = self.url
@@ -56,7 +62,11 @@ class UserList:
 
         last_name = self.last_name
 
-        institution = self.institution.to_dict()
+        institution: Union[Dict[str, Any], None]
+        if isinstance(self.institution, InstitutionList):
+            institution = self.institution.to_dict()
+        else:
+            institution = self.institution
 
         service_user: Union[None, bool]
         service_user = self.service_user
@@ -65,9 +75,9 @@ class UserList:
 
         email = self.email
 
-        user_type: Union[Unset, str] = UNSET
-        if not isinstance(self.user_type, Unset):
-            user_type = self.user_type.value
+        user_type = self.user_type.value
+
+        lifecycle_state = self.lifecycle_state.value
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -80,14 +90,12 @@ class UserList:
                 "last_name": last_name,
                 "institution": institution,
                 "service_user": service_user,
+                "is_active": is_active,
+                "email": email,
+                "user_type": user_type,
+                "lifecycle_state": lifecycle_state,
             }
         )
-        if is_active is not UNSET:
-            field_dict["is_active"] = is_active
-        if email is not UNSET:
-            field_dict["email"] = email
-        if user_type is not UNSET:
-            field_dict["user_type"] = user_type
 
         return field_dict
 
@@ -106,7 +114,20 @@ class UserList:
 
         last_name = d.pop("last_name")
 
-        institution = InstitutionList.from_dict(d.pop("institution"))
+        def _parse_institution(data: object) -> Union["InstitutionList", None]:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                institution_type_1 = InstitutionList.from_dict(data)
+
+                return institution_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union["InstitutionList", None], data)
+
+        institution = _parse_institution(d.pop("institution"))
 
         def _parse_service_user(data: object) -> Union[None, bool]:
             if data is None:
@@ -115,16 +136,13 @@ class UserList:
 
         service_user = _parse_service_user(d.pop("service_user"))
 
-        is_active = d.pop("is_active", UNSET)
+        is_active = d.pop("is_active")
 
-        email = d.pop("email", UNSET)
+        email = d.pop("email")
 
-        _user_type = d.pop("user_type", UNSET)
-        user_type: Union[Unset, UserTypeEnum]
-        if isinstance(_user_type, Unset):
-            user_type = UNSET
-        else:
-            user_type = UserTypeEnum(_user_type)
+        user_type = UserTypeEnum(d.pop("user_type"))
+
+        lifecycle_state = LifecycleStateEnum(d.pop("lifecycle_state"))
 
         user_list = cls(
             id=id,
@@ -137,6 +155,7 @@ class UserList:
             is_active=is_active,
             email=email,
             user_type=user_type,
+            lifecycle_state=lifecycle_state,
         )
 
         user_list.additional_properties = d

@@ -1,4 +1,4 @@
-""" Contains all the data models used in inputs/outputs """
+"""Contains all the data models used in inputs/outputs"""
 
 from .access import Access
 from .account import Account
@@ -11,6 +11,8 @@ from .discipline_enum import DisciplineEnum
 from .institution_countries_enum import InstitutionCountriesEnum
 from .institution_list import InstitutionList
 from .legacy_profile import LegacyProfile
+from .lifecycle_state_enum import LifecycleStateEnum
+from .patched_user import PatchedUser
 from .role import Role
 from .role_list import RoleList
 from .service import Service
@@ -20,6 +22,7 @@ from .user import User
 from .user_grant import UserGrant
 from .user_list import UserList
 from .user_type_enum import UserTypeEnum
+from .users_list_lifecycle_state import UsersListLifecycleState
 from .users_list_user_type import UsersListUserType
 
 __all__ = (
@@ -34,6 +37,8 @@ __all__ = (
     "InstitutionCountriesEnum",
     "InstitutionList",
     "LegacyProfile",
+    "LifecycleStateEnum",
+    "PatchedUser",
     "Role",
     "RoleList",
     "Service",
@@ -42,6 +47,7 @@ __all__ = (
     "User",
     "UserGrant",
     "UserList",
+    "UsersListLifecycleState",
     "UsersListUserType",
     "UserTypeEnum",
 )

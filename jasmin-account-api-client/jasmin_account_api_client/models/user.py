@@ -8,6 +8,7 @@ from dateutil.parser import isoparse
 from ..models.blank_enum import BlankEnum
 from ..models.degree_enum import DegreeEnum
 from ..models.discipline_enum import DisciplineEnum
+from ..models.lifecycle_state_enum import LifecycleStateEnum
 from ..models.user_type_enum import UserTypeEnum
 from ..types import UNSET, Unset
 
@@ -27,7 +28,12 @@ class User:
         id (int):
         account (Account):
         last_login (Union[None, datetime.datetime]):
+        is_superuser (bool): Designates that this user has all permissions without explicitly assigning them.
         username (str): Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+        email (str):
+        is_staff (bool): Designates whether the user can log into this admin site.
+        is_active (bool): Designates whether this user should be treated as active. Unselect this instead of deleting
+            accounts.
         date_joined (datetime.datetime):
         first_name (str):
         last_name (str):
@@ -45,67 +51,66 @@ class User:
             * `Mathematics/Computer Science` - Mathematics/Computer Science
             * `Economics` - Economics
             * `Other` - Other
-        service_user (Union[None, bool]): Service user is True if user type is SERVICE.
-        email_confirmed_at (Union[None, datetime.datetime]):
-        conditions_accepted_at (Union[None, datetime.datetime]):
-        approved_for_root_at (Union[None, datetime.datetime]):
-        institution (InstitutionList):
-        otp_required (Union[None, bool]): OTP is now always required.
-        event (Union[None, str]):
-        responsible_users (List['UserList']):
-        is_superuser (Union[Unset, bool]): Designates that this user has all permissions without explicitly assigning
-            them.
-        email (Union[Unset, str]):
-        is_staff (Union[Unset, bool]): Designates whether the user can log into this admin site.
-        is_active (Union[Unset, bool]): Designates whether this user should be treated as active. Unselect this instead
-            of deleting accounts.
-        degree (Union[BlankEnum, DegreeEnum, Unset]): The type of degree you are studying for, if applicable
+        degree (Union[BlankEnum, DegreeEnum]): The type of degree you are studying for, if applicable
 
             * `` - Not studying for a degree
             * `First degree` - First Degree (Bachelor's / Undergraduate Master's)
             * `Postgraduate Master's` - Postgraduate Master's
             * `Doctorate` - Doctorate
             * `Other` - Other
-        internal_comment (Union[Unset, str]): Internal notes about the user that will not be displayed to the user
-        user_reason (Union[Unset, str]): Indicate why the user has been suspended
-        internal_reason (Union[Unset, str]): Any internal details about the user's suspension that should not be
-            displayed to the user
-        user_type (Union[Unset, UserTypeEnum]): * `STANDARD` - Standard
+        internal_comment (str): Internal notes about the user that will not be displayed to the user
+        service_user (Union[None, bool]): Service user is True if user type is SERVICE.
+        email_confirmed_at (Union[None, datetime.datetime]):
+        conditions_accepted_at (Union[None, datetime.datetime]):
+        approved_for_root_at (Union[None, datetime.datetime]):
+        user_reason (str): Indicate why the user has been suspended
+        internal_reason (str): Any internal details about the user's suspension that should not be displayed to the user
+        institution (Union['InstitutionList', None]):
+        otp_required (Union[None, bool]): OTP is now always required.
+        event (Union[None, str]):
+        responsible_users (List['UserList']):
+        user_type (UserTypeEnum): * `STANDARD` - Standard
             * `SERVICE` - Service User
             * `TRAINING` - Training Account
             * `SHARED` - Shared User
-        deactivated_at (Union[None, Unset, datetime.datetime]): Date on which this account was deactivated.
+        deactivated_at (Union[None, datetime.datetime]): Date on which this account was deactivated.
+        lifecycle_state (Union[Unset, LifecycleStateEnum]): * `NORMAL` - Normal
+            * `AWAITING_CLEANUP` - Awaiting Cleanup
+            * `DORMANT` - Dormant
     """
 
     id: int
     account: "Account"
     last_login: Union[None, datetime.datetime]
+    is_superuser: bool
     username: str
+    email: str
+    is_staff: bool
+    is_active: bool
     date_joined: datetime.datetime
     first_name: str
     last_name: str
     discipline: DisciplineEnum
+    degree: Union[BlankEnum, DegreeEnum]
+    internal_comment: str
     service_user: Union[None, bool]
     email_confirmed_at: Union[None, datetime.datetime]
     conditions_accepted_at: Union[None, datetime.datetime]
     approved_for_root_at: Union[None, datetime.datetime]
-    institution: "InstitutionList"
+    user_reason: str
+    internal_reason: str
+    institution: Union["InstitutionList", None]
     otp_required: Union[None, bool]
     event: Union[None, str]
     responsible_users: List["UserList"]
-    is_superuser: Union[Unset, bool] = UNSET
-    email: Union[Unset, str] = UNSET
-    is_staff: Union[Unset, bool] = UNSET
-    is_active: Union[Unset, bool] = UNSET
-    degree: Union[BlankEnum, DegreeEnum, Unset] = UNSET
-    internal_comment: Union[Unset, str] = UNSET
-    user_reason: Union[Unset, str] = UNSET
-    internal_reason: Union[Unset, str] = UNSET
-    user_type: Union[Unset, UserTypeEnum] = UNSET
-    deactivated_at: Union[None, Unset, datetime.datetime] = UNSET
+    user_type: UserTypeEnum
+    deactivated_at: Union[None, datetime.datetime]
+    lifecycle_state: Union[Unset, LifecycleStateEnum] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        from ..models.institution_list import InstitutionList
+
         id = self.id
 
         account = self.account.to_dict()
@@ -116,7 +121,15 @@ class User:
         else:
             last_login = self.last_login
 
+        is_superuser = self.is_superuser
+
         username = self.username
+
+        email = self.email
+
+        is_staff = self.is_staff
+
+        is_active = self.is_active
 
         date_joined = self.date_joined.isoformat()
 
@@ -125,6 +138,14 @@ class User:
         last_name = self.last_name
 
         discipline = self.discipline.value
+
+        degree: str
+        if isinstance(self.degree, DegreeEnum):
+            degree = self.degree.value
+        else:
+            degree = self.degree.value
+
+        internal_comment = self.internal_comment
 
         service_user: Union[None, bool]
         service_user = self.service_user
@@ -147,7 +168,15 @@ class User:
         else:
             approved_for_root_at = self.approved_for_root_at
 
-        institution = self.institution.to_dict()
+        user_reason = self.user_reason
+
+        internal_reason = self.internal_reason
+
+        institution: Union[Dict[str, Any], None]
+        if isinstance(self.institution, InstitutionList):
+            institution = self.institution.to_dict()
+        else:
+            institution = self.institution
 
         otp_required: Union[None, bool]
         otp_required = self.otp_required
@@ -160,39 +189,17 @@ class User:
             responsible_users_item = responsible_users_item_data.to_dict()
             responsible_users.append(responsible_users_item)
 
-        is_superuser = self.is_superuser
+        user_type = self.user_type.value
 
-        email = self.email
-
-        is_staff = self.is_staff
-
-        is_active = self.is_active
-
-        degree: Union[Unset, str]
-        if isinstance(self.degree, Unset):
-            degree = UNSET
-        elif isinstance(self.degree, DegreeEnum):
-            degree = self.degree.value
-        else:
-            degree = self.degree.value
-
-        internal_comment = self.internal_comment
-
-        user_reason = self.user_reason
-
-        internal_reason = self.internal_reason
-
-        user_type: Union[Unset, str] = UNSET
-        if not isinstance(self.user_type, Unset):
-            user_type = self.user_type.value
-
-        deactivated_at: Union[None, Unset, str]
-        if isinstance(self.deactivated_at, Unset):
-            deactivated_at = UNSET
-        elif isinstance(self.deactivated_at, datetime.datetime):
+        deactivated_at: Union[None, str]
+        if isinstance(self.deactivated_at, datetime.datetime):
             deactivated_at = self.deactivated_at.isoformat()
         else:
             deactivated_at = self.deactivated_at
+
+        lifecycle_state: Union[Unset, str] = UNSET
+        if not isinstance(self.lifecycle_state, Unset):
+            lifecycle_state = self.lifecycle_state.value
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -201,41 +208,33 @@ class User:
                 "id": id,
                 "account": account,
                 "last_login": last_login,
+                "is_superuser": is_superuser,
                 "username": username,
+                "email": email,
+                "is_staff": is_staff,
+                "is_active": is_active,
                 "date_joined": date_joined,
                 "first_name": first_name,
                 "last_name": last_name,
                 "discipline": discipline,
+                "degree": degree,
+                "internal_comment": internal_comment,
                 "service_user": service_user,
                 "email_confirmed_at": email_confirmed_at,
                 "conditions_accepted_at": conditions_accepted_at,
                 "approved_for_root_at": approved_for_root_at,
+                "user_reason": user_reason,
+                "internal_reason": internal_reason,
                 "institution": institution,
                 "otp_required": otp_required,
                 "event": event,
                 "responsible_users": responsible_users,
+                "user_type": user_type,
+                "deactivated_at": deactivated_at,
             }
         )
-        if is_superuser is not UNSET:
-            field_dict["is_superuser"] = is_superuser
-        if email is not UNSET:
-            field_dict["email"] = email
-        if is_staff is not UNSET:
-            field_dict["is_staff"] = is_staff
-        if is_active is not UNSET:
-            field_dict["is_active"] = is_active
-        if degree is not UNSET:
-            field_dict["degree"] = degree
-        if internal_comment is not UNSET:
-            field_dict["internal_comment"] = internal_comment
-        if user_reason is not UNSET:
-            field_dict["user_reason"] = user_reason
-        if internal_reason is not UNSET:
-            field_dict["internal_reason"] = internal_reason
-        if user_type is not UNSET:
-            field_dict["user_type"] = user_type
-        if deactivated_at is not UNSET:
-            field_dict["deactivated_at"] = deactivated_at
+        if lifecycle_state is not UNSET:
+            field_dict["lifecycle_state"] = lifecycle_state
 
         return field_dict
 
@@ -265,7 +264,15 @@ class User:
 
         last_login = _parse_last_login(d.pop("last_login"))
 
+        is_superuser = d.pop("is_superuser")
+
         username = d.pop("username")
+
+        email = d.pop("email")
+
+        is_staff = d.pop("is_staff")
+
+        is_active = d.pop("is_active")
 
         date_joined = isoparse(d.pop("date_joined"))
 
@@ -274,6 +281,25 @@ class User:
         last_name = d.pop("last_name")
 
         discipline = DisciplineEnum(d.pop("discipline"))
+
+        def _parse_degree(data: object) -> Union[BlankEnum, DegreeEnum]:
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                degree_type_0 = DegreeEnum(data)
+
+                return degree_type_0
+            except:  # noqa: E722
+                pass
+            if not isinstance(data, str):
+                raise TypeError()
+            degree_type_1 = BlankEnum(data)
+
+            return degree_type_1
+
+        degree = _parse_degree(d.pop("degree"))
+
+        internal_comment = d.pop("internal_comment")
 
         def _parse_service_user(data: object) -> Union[None, bool]:
             if data is None:
@@ -327,7 +353,24 @@ class User:
 
         approved_for_root_at = _parse_approved_for_root_at(d.pop("approved_for_root_at"))
 
-        institution = InstitutionList.from_dict(d.pop("institution"))
+        user_reason = d.pop("user_reason")
+
+        internal_reason = d.pop("internal_reason")
+
+        def _parse_institution(data: object) -> Union["InstitutionList", None]:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                institution_type_1 = InstitutionList.from_dict(data)
+
+                return institution_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union["InstitutionList", None], data)
+
+        institution = _parse_institution(d.pop("institution"))
 
         def _parse_otp_required(data: object) -> Union[None, bool]:
             if data is None:
@@ -350,50 +393,10 @@ class User:
 
             responsible_users.append(responsible_users_item)
 
-        is_superuser = d.pop("is_superuser", UNSET)
+        user_type = UserTypeEnum(d.pop("user_type"))
 
-        email = d.pop("email", UNSET)
-
-        is_staff = d.pop("is_staff", UNSET)
-
-        is_active = d.pop("is_active", UNSET)
-
-        def _parse_degree(data: object) -> Union[BlankEnum, DegreeEnum, Unset]:
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, str):
-                    raise TypeError()
-                degree_type_0 = DegreeEnum(data)
-
-                return degree_type_0
-            except:  # noqa: E722
-                pass
-            if not isinstance(data, str):
-                raise TypeError()
-            degree_type_1 = BlankEnum(data)
-
-            return degree_type_1
-
-        degree = _parse_degree(d.pop("degree", UNSET))
-
-        internal_comment = d.pop("internal_comment", UNSET)
-
-        user_reason = d.pop("user_reason", UNSET)
-
-        internal_reason = d.pop("internal_reason", UNSET)
-
-        _user_type = d.pop("user_type", UNSET)
-        user_type: Union[Unset, UserTypeEnum]
-        if isinstance(_user_type, Unset):
-            user_type = UNSET
-        else:
-            user_type = UserTypeEnum(_user_type)
-
-        def _parse_deactivated_at(data: object) -> Union[None, Unset, datetime.datetime]:
+        def _parse_deactivated_at(data: object) -> Union[None, datetime.datetime]:
             if data is None:
-                return data
-            if isinstance(data, Unset):
                 return data
             try:
                 if not isinstance(data, str):
@@ -403,37 +406,45 @@ class User:
                 return deactivated_at_type_0
             except:  # noqa: E722
                 pass
-            return cast(Union[None, Unset, datetime.datetime], data)
+            return cast(Union[None, datetime.datetime], data)
 
-        deactivated_at = _parse_deactivated_at(d.pop("deactivated_at", UNSET))
+        deactivated_at = _parse_deactivated_at(d.pop("deactivated_at"))
+
+        _lifecycle_state = d.pop("lifecycle_state", UNSET)
+        lifecycle_state: Union[Unset, LifecycleStateEnum]
+        if isinstance(_lifecycle_state, Unset):
+            lifecycle_state = UNSET
+        else:
+            lifecycle_state = LifecycleStateEnum(_lifecycle_state)
 
         user = cls(
             id=id,
             account=account,
             last_login=last_login,
+            is_superuser=is_superuser,
             username=username,
+            email=email,
+            is_staff=is_staff,
+            is_active=is_active,
             date_joined=date_joined,
             first_name=first_name,
             last_name=last_name,
             discipline=discipline,
+            degree=degree,
+            internal_comment=internal_comment,
             service_user=service_user,
             email_confirmed_at=email_confirmed_at,
             conditions_accepted_at=conditions_accepted_at,
             approved_for_root_at=approved_for_root_at,
+            user_reason=user_reason,
+            internal_reason=internal_reason,
             institution=institution,
             otp_required=otp_required,
             event=event,
             responsible_users=responsible_users,
-            is_superuser=is_superuser,
-            email=email,
-            is_staff=is_staff,
-            is_active=is_active,
-            degree=degree,
-            internal_comment=internal_comment,
-            user_reason=user_reason,
-            internal_reason=internal_reason,
             user_type=user_type,
             deactivated_at=deactivated_at,
+            lifecycle_state=lifecycle_state,
         )
 
         user.additional_properties = d
