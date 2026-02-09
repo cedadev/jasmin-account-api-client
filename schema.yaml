@@ -85,6 +85,45 @@ paths:
                 items:
                   $ref: "#/components/schemas/CategoryList"
           description: ""
+  /api/v1/categories/{category_name}/grants/:
+    get:
+      operationId: categories_grants_list
+      description: |-
+        Viewset to allow grants to be nested under categories.
+
+        Same as GrantsViewset, but filter by category.
+      parameters:
+        - in: path
+          name: category_name
+          schema:
+            type: string
+          required: true
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+      tags:
+        - categories
+      security:
+        - oauth2:
+            - jasmin.services.userservices.all:read
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Grant"
+          description: ""
   /api/v1/categories/{category_name}/services/:
     get:
       operationId: categories_services_list
@@ -275,6 +314,89 @@ paths:
               schema:
                 $ref: "#/components/schemas/Category"
           description: ""
+  /api/v1/grants/:
+    get:
+      operationId: grants_list
+      description: Get the grants associated with a user.
+      parameters:
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+      tags:
+        - grants
+      security:
+        - oauth2:
+            - jasmin.services.userservices.all:read
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Grant"
+          description: ""
+  /api/v1/institutions/:
+    get:
+      operationId: institutions_list
+      parameters:
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+        - name: search
+          required: false
+          in: query
+          description: A search term.
+          schema:
+            type: string
+      tags:
+        - institutions
+      security:
+        - oauth2:
+            - jasmin.auth.institutions.all:read
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InstitutionList"
+          description: ""
+  /api/v1/institutions/{id}/:
+    get:
+      operationId: institutions_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this institution.
+          required: true
+      tags:
+        - institutions
+      security:
+        - oauth2:
+            - jasmin.auth.institutions.all:read
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstitutionList"
+          description: ""
   /api/v1/services/:
     get:
       operationId: services_list
@@ -440,6 +562,9 @@ paths:
           schema:
             type: string
             enum:
+              - ACCNT_DEL_HOME_MOVED
+              - ACCNT_DEL_HOME_REMOVED
+              - ACCNT_DEL_NOTIFIED
               - AWAITING_CLEANUP
               - DORMANT
               - NORMAL
@@ -449,6 +574,9 @@ paths:
             * `NORMAL` - Normal
             * `AWAITING_CLEANUP` - Awaiting Cleanup
             * `DORMANT` - Dormant
+            * `ACCNT_DEL_NOTIFIED` - Impending Account Deletion Notified
+            * `ACCNT_DEL_HOME_MOVED` - Home Directory Hidden
+            * `ACCNT_DEL_HOME_REMOVED` - Home Directory Deleted
         - name: ordering
           required: false
           in: query
@@ -829,6 +957,53 @@ components:
         * `Mathematics/Computer Science` - Mathematics/Computer Science
         * `Economics` - Economics
         * `Other` - Other
+    Grant:
+      type: object
+      description: Simple details about a grant.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        service:
+          allOf:
+            - $ref: "#/components/schemas/ServiceList"
+          readOnly: true
+        role:
+          allOf:
+            - $ref: "#/components/schemas/RoleList"
+          readOnly: true
+        user:
+          allOf:
+            - $ref: "#/components/schemas/ServiceUser"
+          readOnly: true
+        granted_at:
+          type: string
+          format: date-time
+          readOnly: true
+        expires:
+          type: string
+          format: date
+          title: Expiry date
+        revoked:
+          type: boolean
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date on which this grant was revoked.
+        user_reason:
+          type: string
+          title: Reason for revocation (user)
+          description:
+            '<a href="http://daringfireball.net/projects/markdown/syntax"
+            target="_blank">Markdown syntax</a> allowed, but no raw HTML. Examples:
+            **bold**, *italic*, indent 4 spaces for a code block.'
+      required:
+        - granted_at
+        - id
+        - role
+        - service
+        - user
     InstitutionCountriesEnum:
       enum:
         - GB
@@ -883,7 +1058,6 @@ components:
         - CO
         - KM
         - CG
-        - CD
         - CK
         - CR
         - CI
@@ -892,6 +1066,7 @@ components:
         - CW
         - CY
         - CZ
+        - CD
         - DK
         - DJ
         - DM
@@ -930,7 +1105,6 @@ components:
         - GY
         - HT
         - HM
-        - VA
         - HN
         - HK
         - HU
@@ -1071,6 +1245,7 @@ components:
         - UY
         - UZ
         - VU
+        - VA
         - VE
         - VN
         - VG
@@ -1099,7 +1274,7 @@ components:
         * `AU` - Australia
         * `AT` - Austria
         * `AZ` - Azerbaijan
-        * `BS` - Bahamas
+        * `BS` - Bahamas (The)
         * `BH` - Bahrain
         * `BD` - Bangladesh
         * `BB` - Barbados
@@ -1134,7 +1309,6 @@ components:
         * `CO` - Colombia
         * `KM` - Comoros
         * `CG` - Congo
-        * `CD` - Congo (the Democratic Republic of the)
         * `CK` - Cook Islands
         * `CR` - Costa Rica
         * `CI` - Côte d'Ivoire
@@ -1143,6 +1317,7 @@ components:
         * `CW` - Curaçao
         * `CY` - Cyprus
         * `CZ` - Czechia
+        * `CD` - Democratic Republic of the Congo
         * `DK` - Denmark
         * `DJ` - Djibouti
         * `DM` - Dominica
@@ -1181,7 +1356,6 @@ components:
         * `GY` - Guyana
         * `HT` - Haiti
         * `HM` - Heard Island and McDonald Islands
-        * `VA` - Holy See
         * `HN` - Honduras
         * `HK` - Hong Kong
         * `HU` - Hungary
@@ -1252,7 +1426,7 @@ components:
         * `OM` - Oman
         * `PK` - Pakistan
         * `PW` - Palau
-        * `PS` - Palestine, State of
+        * `PS` - Palestine
         * `PA` - Panama
         * `PG` - Papua New Guinea
         * `PY` - Paraguay
@@ -1268,7 +1442,7 @@ components:
         * `RU` - Russia
         * `RW` - Rwanda
         * `BL` - Saint Barthélemy
-        * `SH` - Saint Helena, Ascension and Tristan da Cunha
+        * `SH` - Saint Helena
         * `KN` - Saint Kitts and Nevis
         * `LC` - Saint Lucia
         * `MF` - Saint Martin (French part)
@@ -1289,7 +1463,7 @@ components:
         * `SB` - Solomon Islands
         * `SO` - Somalia
         * `ZA` - South Africa
-        * `GS` - South Georgia and the South Sandwich Islands
+        * `GS` - South Georgia
         * `KR` - South Korea
         * `SS` - South Sudan
         * `ES` - Spain
@@ -1322,6 +1496,7 @@ components:
         * `UY` - Uruguay
         * `UZ` - Uzbekistan
         * `VU` - Vanuatu
+        * `VA` - Vatican City
         * `VE` - Venezuela
         * `VN` - Vietnam
         * `VG` - Virgin Islands (British)
@@ -1337,12 +1512,27 @@ components:
         id:
           type: integer
           readOnly: true
+        url:
+          type: string
+          format: uri
+          readOnly: true
         name:
           type: string
           maxLength: 200
+        standard_user_count:
+          type: integer
+          readOnly: true
+        domains:
+          type: array
+          items:
+            type: string
+          readOnly: true
       required:
+        - domains
         - id
         - name
+        - standard_user_count
+        - url
     LegacyProfile:
       type: object
       properties:
@@ -1373,11 +1563,17 @@ components:
         - NORMAL
         - AWAITING_CLEANUP
         - DORMANT
+        - ACCNT_DEL_NOTIFIED
+        - ACCNT_DEL_HOME_MOVED
+        - ACCNT_DEL_HOME_REMOVED
       type: string
       description: |-
         * `NORMAL` - Normal
         * `AWAITING_CLEANUP` - Awaiting Cleanup
         * `DORMANT` - Dormant
+        * `ACCNT_DEL_NOTIFIED` - Impending Account Deletion Notified
+        * `ACCNT_DEL_HOME_MOVED` - Home Directory Hidden
+        * `ACCNT_DEL_HOME_REMOVED` - Home Directory Deleted
     PatchedUser:
       type: object
       properties:
@@ -1507,7 +1703,7 @@ components:
             not be displayed to the user
         institution:
           allOf:
-            - $ref: "#/components/schemas/InstitutionList"
+            - $ref: "#/components/schemas/RelatedInstitution"
           readOnly: true
           nullable: true
         otp_required:
@@ -1544,12 +1740,32 @@ components:
             * `NORMAL` - Normal
             * `AWAITING_CLEANUP` - Awaiting Cleanup
             * `DORMANT` - Dormant
+            * `ACCNT_DEL_NOTIFIED` - Impending Account Deletion Notified
+            * `ACCNT_DEL_HOME_MOVED` - Home Directory Hidden
+            * `ACCNT_DEL_HOME_REMOVED` - Home Directory Deleted
         deactivated_at:
           type: string
           format: date-time
           readOnly: true
           nullable: true
           description: Date on which this account was deactivated.
+    RelatedInstitution:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+      required:
+        - id
+        - name
+        - url
     Role:
       type: object
       description: Detail of role with holders.
@@ -1580,9 +1796,13 @@ components:
           type: string
           title: Role name
           maxLength: 50
+        user_count:
+          type: integer
+          readOnly: true
       required:
         - id
         - name
+        - user_count
     Service:
       type: object
       description: Full details of a service.
@@ -1645,7 +1865,7 @@ components:
               * `AU` - Australia
               * `AT` - Austria
               * `AZ` - Azerbaijan
-              * `BS` - Bahamas
+              * `BS` - Bahamas (The)
               * `BH` - Bahrain
               * `BD` - Bangladesh
               * `BB` - Barbados
@@ -1680,7 +1900,6 @@ components:
               * `CO` - Colombia
               * `KM` - Comoros
               * `CG` - Congo
-              * `CD` - Congo (the Democratic Republic of the)
               * `CK` - Cook Islands
               * `CR` - Costa Rica
               * `CI` - Côte d'Ivoire
@@ -1689,6 +1908,7 @@ components:
               * `CW` - Curaçao
               * `CY` - Cyprus
               * `CZ` - Czechia
+              * `CD` - Democratic Republic of the Congo
               * `DK` - Denmark
               * `DJ` - Djibouti
               * `DM` - Dominica
@@ -1727,7 +1947,6 @@ components:
               * `GY` - Guyana
               * `HT` - Haiti
               * `HM` - Heard Island and McDonald Islands
-              * `VA` - Holy See
               * `HN` - Honduras
               * `HK` - Hong Kong
               * `HU` - Hungary
@@ -1798,7 +2017,7 @@ components:
               * `OM` - Oman
               * `PK` - Pakistan
               * `PW` - Palau
-              * `PS` - Palestine, State of
+              * `PS` - Palestine
               * `PA` - Panama
               * `PG` - Papua New Guinea
               * `PY` - Paraguay
@@ -1814,7 +2033,7 @@ components:
               * `RU` - Russia
               * `RW` - Rwanda
               * `BL` - Saint Barthélemy
-              * `SH` - Saint Helena, Ascension and Tristan da Cunha
+              * `SH` - Saint Helena
               * `KN` - Saint Kitts and Nevis
               * `LC` - Saint Lucia
               * `MF` - Saint Martin (French part)
@@ -1835,7 +2054,7 @@ components:
               * `SB` - Solomon Islands
               * `SO` - Somalia
               * `ZA` - South Africa
-              * `GS` - South Georgia and the South Sandwich Islands
+              * `GS` - South Georgia
               * `KR` - South Korea
               * `SS` - South Sudan
               * `ES` - Spain
@@ -1868,6 +2087,7 @@ components:
               * `UY` - Uruguay
               * `UZ` - Uzbekistan
               * `VU` - Vanuatu
+              * `VA` - Vatican City
               * `VE` - Venezuela
               * `VN` - Vietnam
               * `VG` - Virgin Islands (British)
@@ -2097,7 +2317,7 @@ components:
             not be displayed to the user
         institution:
           allOf:
-            - $ref: "#/components/schemas/InstitutionList"
+            - $ref: "#/components/schemas/RelatedInstitution"
           readOnly: true
           nullable: true
         otp_required:
@@ -2134,6 +2354,9 @@ components:
             * `NORMAL` - Normal
             * `AWAITING_CLEANUP` - Awaiting Cleanup
             * `DORMANT` - Dormant
+            * `ACCNT_DEL_NOTIFIED` - Impending Account Deletion Notified
+            * `ACCNT_DEL_HOME_MOVED` - Home Directory Hidden
+            * `ACCNT_DEL_HOME_REMOVED` - Home Directory Deleted
         deactivated_at:
           type: string
           format: date-time
@@ -2233,7 +2456,7 @@ components:
           readOnly: true
         institution:
           allOf:
-            - $ref: "#/components/schemas/InstitutionList"
+            - $ref: "#/components/schemas/RelatedInstitution"
           readOnly: true
           nullable: true
         service_user:
@@ -2274,7 +2497,17 @@ components:
             * `NORMAL` - Normal
             * `AWAITING_CLEANUP` - Awaiting Cleanup
             * `DORMANT` - Dormant
+            * `ACCNT_DEL_NOTIFIED` - Impending Account Deletion Notified
+            * `ACCNT_DEL_HOME_MOVED` - Home Directory Hidden
+            * `ACCNT_DEL_HOME_REMOVED` - Home Directory Deleted
+        deactivated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          description: Date on which this account was deactivated.
       required:
+        - deactivated_at
         - email
         - first_name
         - id
@@ -2315,7 +2548,6 @@ components:
             jasmin.projects.services.all:read: List all services in the projects portal.
             openid: Authenticate using OpenID Connect.
             https://slcs.jasmin.ac.uk/certificate/: Obtain short-lived user certificate
-            jasmin.auth.ldap: LDAP Metadata about your user account.
             https://accounts.jasmin.ac.uk/oauth/introspect/: Introspect OAuth tokens
             https://accounts.jasmin.ac.uk/oauth/register_scope/:
               Register additional
@@ -2323,7 +2555,6 @@ components:
             https://accounts.jasmin.ac.uk/api/profile/:
               Access your basic profile
               information
-            jasmin.auth.users.all:write: Write all users profiles.
             https://accounts.jasmin.ac.uk/api/services/: Access your current services
             https://accounts.jasmin.ac.uk/api/email/:
               Check if your email requires
@@ -2339,3 +2570,5 @@ components:
               View basic information about all
               service categories.
             jasmin.auth.users.all:read: View all user information about all users.
+            jasmin.auth.ldap: LDAP Metadata about your user account.
+            jasmin.auth.users.all:write: Write all users profiles.
