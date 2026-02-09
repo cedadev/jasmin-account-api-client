@@ -1,27 +1,23 @@
-from typing import Any, Dict, List, Type, TypeVar, cast
+from typing import Any, Dict, List, Type, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-T = TypeVar("T", bound="InstitutionList")
+T = TypeVar("T", bound="RelatedInstitution")
 
 
 @_attrs_define
-class InstitutionList:
+class RelatedInstitution:
     """
     Attributes:
         id (int):
         url (str):
         name (str):
-        standard_user_count (int):
-        domains (List[str]):
     """
 
     id: int
     url: str
     name: str
-    standard_user_count: int
-    domains: List[str]
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -31,10 +27,6 @@ class InstitutionList:
 
         name = self.name
 
-        standard_user_count = self.standard_user_count
-
-        domains = self.domains
-
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -42,8 +34,6 @@ class InstitutionList:
                 "id": id,
                 "url": url,
                 "name": name,
-                "standard_user_count": standard_user_count,
-                "domains": domains,
             }
         )
 
@@ -58,20 +48,14 @@ class InstitutionList:
 
         name = d.pop("name")
 
-        standard_user_count = d.pop("standard_user_count")
-
-        domains = cast(List[str], d.pop("domains"))
-
-        institution_list = cls(
+        related_institution = cls(
             id=id,
             url=url,
             name=name,
-            standard_user_count=standard_user_count,
-            domains=domains,
         )
 
-        institution_list.additional_properties = d
-        return institution_list
+        related_institution.additional_properties = d
+        return related_institution
 
     @property
     def additional_keys(self) -> List[str]:

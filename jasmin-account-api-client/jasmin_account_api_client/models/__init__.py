@@ -8,11 +8,13 @@ from .category_list import CategoryList
 from .category_service import CategoryService
 from .degree_enum import DegreeEnum
 from .discipline_enum import DisciplineEnum
+from .grant import Grant
 from .institution_countries_enum import InstitutionCountriesEnum
 from .institution_list import InstitutionList
 from .legacy_profile import LegacyProfile
 from .lifecycle_state_enum import LifecycleStateEnum
 from .patched_user import PatchedUser
+from .related_institution import RelatedInstitution
 from .role import Role
 from .role_list import RoleList
 from .service import Service
@@ -34,11 +36,13 @@ __all__ = (
     "CategoryService",
     "DegreeEnum",
     "DisciplineEnum",
+    "Grant",
     "InstitutionCountriesEnum",
     "InstitutionList",
     "LegacyProfile",
     "LifecycleStateEnum",
     "PatchedUser",
+    "RelatedInstitution",
     "Role",
     "RoleList",
     "Service",

@@ -14,7 +14,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.account import Account
-    from ..models.institution_list import InstitutionList
+    from ..models.related_institution import RelatedInstitution
     from ..models.user_list import UserList
 
 
@@ -65,7 +65,7 @@ class User:
         approved_for_root_at (Union[None, datetime.datetime]):
         user_reason (str): Indicate why the user has been suspended
         internal_reason (str): Any internal details about the user's suspension that should not be displayed to the user
-        institution (Union['InstitutionList', None]):
+        institution (Union['RelatedInstitution', None]):
         otp_required (Union[None, bool]): OTP is now always required.
         event (Union[None, str]):
         responsible_users (List['UserList']):
@@ -77,6 +77,9 @@ class User:
         lifecycle_state (Union[Unset, LifecycleStateEnum]): * `NORMAL` - Normal
             * `AWAITING_CLEANUP` - Awaiting Cleanup
             * `DORMANT` - Dormant
+            * `ACCNT_DEL_NOTIFIED` - Impending Account Deletion Notified
+            * `ACCNT_DEL_HOME_MOVED` - Home Directory Hidden
+            * `ACCNT_DEL_HOME_REMOVED` - Home Directory Deleted
     """
 
     id: int
@@ -99,7 +102,7 @@ class User:
     approved_for_root_at: Union[None, datetime.datetime]
     user_reason: str
     internal_reason: str
-    institution: Union["InstitutionList", None]
+    institution: Union["RelatedInstitution", None]
     otp_required: Union[None, bool]
     event: Union[None, str]
     responsible_users: List["UserList"]
@@ -109,7 +112,7 @@ class User:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        from ..models.institution_list import InstitutionList
+        from ..models.related_institution import RelatedInstitution
 
         id = self.id
 
@@ -173,7 +176,7 @@ class User:
         internal_reason = self.internal_reason
 
         institution: Union[Dict[str, Any], None]
-        if isinstance(self.institution, InstitutionList):
+        if isinstance(self.institution, RelatedInstitution):
             institution = self.institution.to_dict()
         else:
             institution = self.institution
@@ -241,7 +244,7 @@ class User:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         from ..models.account import Account
-        from ..models.institution_list import InstitutionList
+        from ..models.related_institution import RelatedInstitution
         from ..models.user_list import UserList
 
         d = src_dict.copy()
@@ -357,18 +360,18 @@ class User:
 
         internal_reason = d.pop("internal_reason")
 
-        def _parse_institution(data: object) -> Union["InstitutionList", None]:
+        def _parse_institution(data: object) -> Union["RelatedInstitution", None]:
             if data is None:
                 return data
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                institution_type_1 = InstitutionList.from_dict(data)
+                institution_type_1 = RelatedInstitution.from_dict(data)
 
                 return institution_type_1
             except:  # noqa: E722
                 pass
-            return cast(Union["InstitutionList", None], data)
+            return cast(Union["RelatedInstitution", None], data)
 
         institution = _parse_institution(d.pop("institution"))
 

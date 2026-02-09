@@ -15,7 +15,7 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.account import Account
-    from ..models.institution_list import InstitutionList
+    from ..models.related_institution import RelatedInstitution
     from ..models.user_list import UserList
 
 
@@ -68,7 +68,7 @@ class PatchedUser:
         user_reason (Union[Unset, str]): Indicate why the user has been suspended
         internal_reason (Union[Unset, str]): Any internal details about the user's suspension that should not be
             displayed to the user
-        institution (Union['InstitutionList', None, Unset]):
+        institution (Union['RelatedInstitution', None, Unset]):
         otp_required (Union[None, Unset, bool]): OTP is now always required.
         event (Union[None, Unset, str]):
         responsible_users (Union[Unset, List['UserList']]):
@@ -79,6 +79,9 @@ class PatchedUser:
         lifecycle_state (Union[Unset, LifecycleStateEnum]): * `NORMAL` - Normal
             * `AWAITING_CLEANUP` - Awaiting Cleanup
             * `DORMANT` - Dormant
+            * `ACCNT_DEL_NOTIFIED` - Impending Account Deletion Notified
+            * `ACCNT_DEL_HOME_MOVED` - Home Directory Hidden
+            * `ACCNT_DEL_HOME_REMOVED` - Home Directory Deleted
         deactivated_at (Union[None, Unset, datetime.datetime]): Date on which this account was deactivated.
     """
 
@@ -102,7 +105,7 @@ class PatchedUser:
     approved_for_root_at: Union[None, Unset, datetime.datetime] = UNSET
     user_reason: Union[Unset, str] = UNSET
     internal_reason: Union[Unset, str] = UNSET
-    institution: Union["InstitutionList", None, Unset] = UNSET
+    institution: Union["RelatedInstitution", None, Unset] = UNSET
     otp_required: Union[None, Unset, bool] = UNSET
     event: Union[None, Unset, str] = UNSET
     responsible_users: Union[Unset, List["UserList"]] = UNSET
@@ -112,7 +115,7 @@ class PatchedUser:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        from ..models.institution_list import InstitutionList
+        from ..models.related_institution import RelatedInstitution
 
         id = self.id
 
@@ -197,7 +200,7 @@ class PatchedUser:
         institution: Union[Dict[str, Any], None, Unset]
         if isinstance(self.institution, Unset):
             institution = UNSET
-        elif isinstance(self.institution, InstitutionList):
+        elif isinstance(self.institution, RelatedInstitution):
             institution = self.institution.to_dict()
         else:
             institution = self.institution
@@ -409,7 +412,7 @@ class PatchedUser:
         institution: Union[None, Tuple[None, bytes, str], Unset]
         if isinstance(self.institution, Unset):
             institution = UNSET
-        elif isinstance(self.institution, InstitutionList):
+        elif isinstance(self.institution, RelatedInstitution):
             institution = (None, json.dumps(self.institution.to_dict()).encode(), "application/json")
         else:
             institution = self.institution
@@ -515,7 +518,7 @@ class PatchedUser:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         from ..models.account import Account
-        from ..models.institution_list import InstitutionList
+        from ..models.related_institution import RelatedInstitution
         from ..models.user_list import UserList
 
         d = src_dict.copy()
@@ -658,7 +661,7 @@ class PatchedUser:
 
         internal_reason = d.pop("internal_reason", UNSET)
 
-        def _parse_institution(data: object) -> Union["InstitutionList", None, Unset]:
+        def _parse_institution(data: object) -> Union["RelatedInstitution", None, Unset]:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -666,12 +669,12 @@ class PatchedUser:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                institution_type_1 = InstitutionList.from_dict(data)
+                institution_type_1 = RelatedInstitution.from_dict(data)
 
                 return institution_type_1
             except:  # noqa: E722
                 pass
-            return cast(Union["InstitutionList", None, Unset], data)
+            return cast(Union["RelatedInstitution", None, Unset], data)
 
         institution = _parse_institution(d.pop("institution", UNSET))
 

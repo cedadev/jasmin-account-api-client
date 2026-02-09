@@ -13,10 +13,12 @@ class RoleList:
     Attributes:
         id (int):
         name (str):
+        user_count (int):
     """
 
     id: int
     name: str
+    user_count: int
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -24,12 +26,15 @@ class RoleList:
 
         name = self.name
 
+        user_count = self.user_count
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "id": id,
                 "name": name,
+                "user_count": user_count,
             }
         )
 
@@ -42,9 +47,12 @@ class RoleList:
 
         name = d.pop("name")
 
+        user_count = d.pop("user_count")
+
         role_list = cls(
             id=id,
             name=name,
+            user_count=user_count,
         )
 
         role_list.additional_properties = d
