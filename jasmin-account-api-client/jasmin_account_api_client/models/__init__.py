@@ -6,6 +6,7 @@ from .blank_enum import BlankEnum
 from .category import Category
 from .category_list import CategoryList
 from .category_service import CategoryService
+from .country_enum import CountryEnum
 from .degree_enum import DegreeEnum
 from .discipline_enum import DisciplineEnum
 from .grant import Grant
@@ -34,6 +35,7 @@ __all__ = (
     "Category",
     "CategoryList",
     "CategoryService",
+    "CountryEnum",
     "DegreeEnum",
     "DisciplineEnum",
     "Grant",

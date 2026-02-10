@@ -1,7 +1,11 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+
+from ..models.blank_enum import BlankEnum
+from ..models.country_enum import CountryEnum
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="RelatedInstitution")
 
@@ -13,11 +17,13 @@ class RelatedInstitution:
         id (int):
         url (str):
         name (str):
+        country (Union[BlankEnum, CountryEnum, None, Unset]):
     """
 
     id: int
     url: str
     name: str
+    country: Union[BlankEnum, CountryEnum, None, Unset] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -26,6 +32,16 @@ class RelatedInstitution:
         url = self.url
 
         name = self.name
+
+        country: Union[None, Unset, str]
+        if isinstance(self.country, Unset):
+            country = UNSET
+        elif isinstance(self.country, CountryEnum):
+            country = self.country.value
+        elif isinstance(self.country, BlankEnum):
+            country = self.country.value
+        else:
+            country = self.country
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -36,6 +52,8 @@ class RelatedInstitution:
                 "name": name,
             }
         )
+        if country is not UNSET:
+            field_dict["country"] = country
 
         return field_dict
 
@@ -48,10 +66,36 @@ class RelatedInstitution:
 
         name = d.pop("name")
 
+        def _parse_country(data: object) -> Union[BlankEnum, CountryEnum, None, Unset]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                country_type_0 = CountryEnum(data)
+
+                return country_type_0
+            except:  # noqa: E722
+                pass
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                country_type_1 = BlankEnum(data)
+
+                return country_type_1
+            except:  # noqa: E722
+                pass
+            return cast(Union[BlankEnum, CountryEnum, None, Unset], data)
+
+        country = _parse_country(d.pop("country", UNSET))
+
         related_institution = cls(
             id=id,
             url=url,
             name=name,
+            country=country,
         )
 
         related_institution.additional_properties = d
